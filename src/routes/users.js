@@ -3,6 +3,7 @@ const router = require('express').Router()
 const users = [{name: "Adam", password: "asdfgh"},{name: "Pete", password: "íyxcvb!!"}]
 
 router.get('/', (req, res) => {
+    console.log('request call: api/users/')
     res.send(users)
 })
 
