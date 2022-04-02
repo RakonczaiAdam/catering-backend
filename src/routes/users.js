@@ -8,8 +8,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/registration', (req, res)=>{
-    //users.push(req)
-    console.log(req.body)
+    users.push(req.body)
     res.send(users)
 })
 
