@@ -21,6 +21,10 @@
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.18.0",
+    "sequelize-cli": "^6.4.1"
   }
 }
