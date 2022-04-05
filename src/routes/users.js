@@ -1,24 +1,13 @@
 const router = require('express').Router()
+const UserController = require('../controllers/userController')
+const { authenticateToken } = require('../middlewares/jwt')
 
-const users = [{name: "Adam", password: "asdfgh"},{name: "Pete", password: "íyxcvb!!"}]
+router.get('/', UserController.findAllUser)
 
-router.get('/', (req, res) => {
-    try{
-        console.log('request call: api/users/')
-        res.send(users)
-    }catch(error){
-        console.error("request failed: api/users/")
-    }
-})
+// router.get('/getOne', authenticateToken, UserController.findUser)
 
-router.post('/registration', (req, res)=>{
-    try{
-        console.log('request call: api/users/registration')
-        users.push(req.body)
-        res.send(users)
-    }catch(error){
-        console.error("request failed: api/users/registration")
-    }
-})
+router.post('/login', UserController.loginUser)
+
+router.post('/registration', UserController.registerUser)
 
 module.exports = router

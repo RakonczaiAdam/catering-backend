@@ -1,9 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const routes = require('./routes/routes')
 const cors = require('cors')
-// const { Sequelize } = require('sequelize');
-// import { database } from '../config';
 
 try{
 
@@ -33,19 +32,6 @@ try{
   }catch(error){
     console.error("[cors] "+error);
   }
-
-  // try{
-  //   const { dev } = database;
-
-  //   const sequelize = new Sequelize(dev.database, dev.user, dev.password, {
-  //       host: dev.host,
-  //       dialect: dev.driver
-  //   })
-  //   sequelize.authenticate();
-  //   console.log('[sequelize] Connection has been established successfully.');
-  // }catch(error){
-  //   console.error("[sequelize] "+ error)
-  // }
 
   app.use('/api', routes)
 

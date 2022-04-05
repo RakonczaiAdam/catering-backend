@@ -49,7 +49,7 @@ exports.findByCompanyId = async ({params}, res)=>{
 exports.findByStoreId = async ({params}, res)=>{
     try{
         const { storeId: store } = params;
-        const returnedStore = await Stores.findAll({
+        const returnedStore = await Stores.findOne({
             where : {
                 id: store
             }
