@@ -23,6 +23,8 @@ try{
         methods: [
             'GET',
             'POST',
+            'DELETE',
+            'PUT'
           ],
         credentials:true, 
         optionSuccessStatus:200,

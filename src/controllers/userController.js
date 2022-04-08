@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Users, RefreshToken } = require('../models')
+const { registerUser } = require('../services/userService')
 
 exports.getToken = async (req, res) => {
     try{
@@ -67,6 +68,21 @@ exports.loginUser = async ({body}, res) => {
     }
 }
 
+exports.logoutUser = async (req, res) =>{
+    try{
+        const refreshToken = req.body.token
+        const deletedToken = await RefreshToken.destroy({
+            where : {
+                token: refreshToken
+            }
+        })
+        return res.json({deletedTokens: deletedToken} )
+    }catch(error){
+        console.error("Logout failed api/users/logout , "+error)
+        return res.status(500).json({error: "Logout failed."})
+    }
+}
+
 // exports.loginUser = async ({body}, res) => {
 //     try{
 //         // Authenticate User
@@ -97,10 +113,14 @@ exports.loginUser = async ({body}, res) => {
 exports.registerUser = async (req, res) =>{
     try{
         console.log('request call: api/users/registration')
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        req.body.password = hashedPassword;
-        const user = await Users.create(req.body)
-        return res.json(user)
+        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        // req.body.password = hashedPassword;
+        // const user = await Users.create(req.body)
+        // return res.json(user)
+        if(req.user == null){
+            return res.status(403).json({})
+        }
+        return registerUser(req.body)
     }catch(error){
         console.error("request failed: api/users/registration, "+ error)
         return res.status(500).json({error: "Registration failed."})
@@ -119,7 +139,7 @@ exports.findAllUser = async (req, res) =>{
 }
 
 function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15s'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '20s'})
 } 
 
 // Middleware example, we can use req.user because authenticateToken was added inside route

@@ -1,4 +1,4 @@
-const { Companies } = require('../models')
+const { Companies, Users } = require('../models')
 
 exports.registerCompany = async ({body}, res) => {
     try{
@@ -15,7 +15,12 @@ exports.registerCompany = async ({body}, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         })
-        return res.json(company)
+        const user = await Users.create({
+            company: company.id,
+            name: companyName,
+            password: password
+        })
+        return res.json({company: company, user: user})
     }catch(error){
         console.error("request failed at api/companies/registration , "+error)
         return res.status(500).json({error: "Error during company registration."})

@@ -10,6 +10,8 @@ router.post('/token', UserController.getToken)
 
 router.post('/login', UserController.loginUser)
 
-router.post('/registration', UserController.registerUser)
+router.delete('/logout', UserController.logoutUser)
+
+router.post('/registration', authenticateToken, UserController.registerUser)
 
 module.exports = router
