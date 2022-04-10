@@ -1,4 +1,5 @@
 const { Companies, Users } = require('../models')
+const {registerUser} = require('../services/userService')
 
 exports.registerCompany = async ({body}, res) => {
     try{
@@ -15,7 +16,7 @@ exports.registerCompany = async ({body}, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         })
-        const user = await Users.create({
+        const user = await registerUser({
             company: company.id,
             name: companyName,
             password: password
