@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Companies.init({
     companyName: DataTypes.STRING,
-    password: DataTypes.STRING,
     country: DataTypes.STRING,
     region: DataTypes.STRING,
     city: DataTypes.STRING,
     address: DataTypes.STRING,
     taxNumber: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Companies',

@@ -8,7 +8,7 @@ exports.createCompanyLicence = async (req, res) => {
                 id: req.user.company
             }
         })
-        if(company.companyName !== user.name){
+        if(!req.user.isAdmin){
             return res.status(403).json({error: "Only the root user permitted"})
         }
         const companyLicence = await CompanyLicences.create({

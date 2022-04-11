@@ -1,28 +1,33 @@
 const { Companies, Users } = require('../models')
 const {registerUser} = require('../services/userService')
+const { SequelizeUniqueConstraintError } = require('sequelize')
 
 exports.registerCompany = async ({body}, res) => {
     try{
-        const {companyName, password, country, region, city, address, taxNumber, email} = body;
+        const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = body;
         const company = await Companies.create({
             companyName : companyName,
-            password : password,
             country: country,
             region : region,
             city: city,
             address : address,
             taxNumber: taxNumber,
             email: email,
+            phoneNumber: phoneNumber,
             createdAt: new Date(),
             updatedAt: new Date()
         })
         const user = await registerUser({
             company: company.id,
-            name: companyName,
-            password: password
+            userName: companyName,
+            password: password,
+            isAdmin: true
         })
         return res.json({company: company, user: user})
     }catch(error){
+        if(error.name === "SequelizeUniqueConstraintError"){
+            return res.status(500).json({error: "UNIQUE_FIELD_CONFLICT"})
+        }
         console.error("request failed at api/companies/registration , "+error)
         return res.status(500).json({error: "Error during company registration."})
     }

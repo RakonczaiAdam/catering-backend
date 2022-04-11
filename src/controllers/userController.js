@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users, RefreshToken } = require('../models')
+const { Users, RefreshToken, Companies } = require('../models')
 const { registerUser } = require('../services/userService')
 
 exports.getToken = async (req, res) => {
@@ -24,8 +24,7 @@ exports.getToken = async (req, res) => {
             const accessToken = generateAccessToken({
                 id: user.id, 
                 company: user.company,
-                name: user.name,
-                password: user.password,
+                userName: user.userName,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             })
@@ -39,10 +38,16 @@ exports.getToken = async (req, res) => {
 exports.loginUser = async ({body}, res) => {
     try{
         // Authenticate User
-        const { name, password} = body;
+        const { companyName, userName, password} = body;
+        const company = await Companies.findOne({
+            where: {
+                companyName: companyName
+            }
+        })
         const user = await Users.findOne({
             where : {
-                name: name
+                company: company.id,
+                userName: userName
             },
             raw: true
         })
@@ -51,14 +56,26 @@ exports.loginUser = async ({body}, res) => {
         }
         if (await bcrypt.compare(password, user.password)){
             // Authorization User with JWT
-            const accessToken = generateAccessToken(user)
-            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-            await RefreshToken.create({
+            const accessToken = generateAccessToken({
+                id: user.id, 
+                company: user.company,
+                userName: user.userName,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            })
+            const refreshToken = jwt.sign({
+                id: user.id, 
+                company: user.company,
+                userName: user.userName,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            }, process.env.REFRESH_TOKEN_SECRET)
+            const dbToken = await RefreshToken.create({
                 token: refreshToken,
                 createdAt: new Date(),
                 updatedAt: new Date()
             })
-            return res.json({accessToken: accessToken, refreshToken: refreshToken})
+            return res.json({accessToken: accessToken, refreshToken: dbToken.token})
         }else{
             return res.status(400).json({error: "Wrong password"})
         }
@@ -147,7 +164,7 @@ exports.findUser = async (req, res) =>{
     try{
         const user = await Users.findOne({
             where:{
-                name: req.user.name
+                userName: req.user.userName
             }
         })
         return res.json({requestUser: req.user, dbUser: user})

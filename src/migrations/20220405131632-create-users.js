@@ -15,11 +15,14 @@ module.exports = {
           key: 'id'
         }
       },
-      name: {
+      userName: {
         type: Sequelize.STRING
       },
       password: {
         type: Sequelize.STRING
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

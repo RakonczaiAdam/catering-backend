@@ -9,10 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       companyName: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       country: {
         type: Sequelize.STRING
@@ -30,6 +28,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
+        type: Sequelize.STRING
+      },
+      phoneNumber: {
         type: Sequelize.STRING
       },
       createdAt: {
