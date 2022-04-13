@@ -38,15 +38,15 @@ exports.getToken = async (req, res) => {
 exports.loginUser = async ({body}, res) => {
     try{
         // Authenticate User
-        const { companyName, userName, password} = body;
-        const company = await Companies.findOne({
-            where: {
-                companyName: companyName
-            }
-        })
+        const { companyId, userName, password} = body;
+        // const company = await Companies.findOne({
+        //     where: {
+        //         companyName: companyName
+        //     }
+        // })
         const user = await Users.findOne({
             where : {
-                company: company.id,
+                company: companyId,
                 userName: userName
             },
             raw: true
