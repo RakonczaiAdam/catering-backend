@@ -164,11 +164,12 @@ exports.findUser = async (req, res) =>{
     try{
         const user = await Users.findOne({
             where:{
-                userName: req.user.userName
+                id: req.user.id
             }
         })
-        return res.json({requestUser: req.user, dbUser: user})
+        return res.json(user)
     }catch(error){
         console.error(error)
+        return res.status(500).json({error: "inside findUser"})
     }
 }

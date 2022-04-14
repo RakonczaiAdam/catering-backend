@@ -9,8 +9,8 @@ exports.authenticateToken = (req, res, next) =>{
         }
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) =>{
             if(error){
-                console.error(error)
-                return res.status(403).json({error: "Error during verifying jwt."})
+                console.error(error.name)
+                return res.status(403).json({errorType: "TokenExpiredError"})
             }
             req.user = user
             next()

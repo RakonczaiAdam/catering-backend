@@ -57,3 +57,17 @@ exports.findCompanyByName = async ({params}, res) =>{
         return res.status(500).json({error: "Error during get company by name."})
     }
 }
+
+exports.findCompanyByUser = async ({user}, res) =>{
+    try{
+        const company = await Companies.findAll({
+            where :{
+                id : user.company
+            }
+        })
+        return res.json(company);
+    }catch(error){
+        console.error("request failed at api/companies/companyName , "+error);
+        return res.status(500).json({error: "Error during get company by name."})
+    }
+}

@@ -31,17 +31,17 @@ exports.findAllStore = async (req, res)=>{
     }
 }
 
-exports.findByCompanyId = async ({params}, res)=>{
+exports.findByCompanyId = async ({user}, res)=>{
     try{
-        const { companyId: company } = params;
+        console.error("api/stores/company")
         const stores = await Stores.findAll({
             where : {
-                company: company
+                company: user.company
             }
         });
         return res.json(stores)
     }catch(error){
-        console.error("request failed at api/stores/companyId , "+error)
+        console.error("request failed at api/stores/company , "+error)
         return res.status(500).json({error: "Error during fetching stores by company."})
     }
 }
