@@ -1,12 +1,12 @@
 const res = require('express/lib/response');
 const { Stores } = require('../models')
 
-exports.createStore = async ({body}, res)=>{
+exports.createStore = async (req, res)=>{
     try{
-        const {storeName, company, country, region, city, address} = body;
+        const {storeName, country, region, city, address} = req.body;
         const store = await Stores.create({
             storeName: storeName,
-            company: company,
+            company: req.user.company,
             country: country,
             region: region,
             city: city,
@@ -33,11 +33,13 @@ exports.findAllStore = async (req, res)=>{
 
 exports.findByCompanyId = async ({user}, res)=>{
     try{
-        console.error("api/stores/company")
         const stores = await Stores.findAll({
             where : {
                 company: user.company
-            }
+            },
+            order: [
+                ['createdAt', 'DESC']
+            ]
         });
         return res.json(stores)
     }catch(error){
@@ -58,5 +60,19 @@ exports.findByStoreId = async ({params}, res)=>{
     }catch(error){
         console.error("request failed at api/stores/storeId , "+error)
         return res.status(500).json({error: "Error during getting stores by id."})
+    }
+}
+
+exports.deleteStore = async({params}, res)=>{
+    try{
+        const deletedRows = await Stores.destroy({
+            where: {
+                id: params.storeId
+            }
+        })
+        return res.json(deletedRows)
+    }catch(error){
+        console.error("request failed at api/stores/delete/id , "+error)
+        return res.status(500).json({error: "Error during delete stores by id."})
     }
 }

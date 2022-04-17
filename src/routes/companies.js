@@ -6,7 +6,7 @@ router.post('/registration', CompanyController.registerCompany)
 
 router.get("/", CompanyController.findAllCompany)
 
-router.get("/:companyName", CompanyController.findCompanyByName)
+// router.get("/:companyName", CompanyController.findCompanyByName)
 
 router.get("/findCompanyByUser", authenticateToken, CompanyController.findCompanyByUser)
 

@@ -1,6 +1,5 @@
 const { Companies, Users } = require('../models')
 const {registerUser} = require('../services/userService')
-const { SequelizeUniqueConstraintError } = require('sequelize')
 
 exports.registerCompany = async ({body}, res) => {
     try{
@@ -43,24 +42,9 @@ exports.findAllCompany = async (req, res) => {
     }
 }
 
-exports.findCompanyByName = async ({params}, res) =>{
-    try{
-        const { companyName : name } = params;
-        const company = await Companies.findAll({
-            where :{
-                companyName : name
-            }
-        })
-        return res.json(company);
-    }catch(error){
-        console.error("request failed at api/companies/companyName , "+error);
-        return res.status(500).json({error: "Error during get company by name."})
-    }
-}
-
 exports.findCompanyByUser = async ({user}, res) =>{
     try{
-        const company = await Companies.findAll({
+        const company = await Companies.findOne({
             where :{
                 id : user.company
             }
