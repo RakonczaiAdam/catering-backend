@@ -1,5 +1,6 @@
 const res = require('express/lib/response');
-const { Stores } = require('../models')
+const { Stores, UserStores, Users } = require('../models')
+const { Op } = require('sequelize')
 
 exports.createStore = async (req, res)=>{
     try{
@@ -13,6 +14,18 @@ exports.createStore = async (req, res)=>{
             address: address,
             createdAt: new Date(),
             updatedAt: new Date()
+        })
+        const admins = await Users.findAll({
+            where : {
+                isAdmin: true,
+                company: req.user.company
+            }
+        })
+        admins.map(async admin=>{
+            const userStore = await UserStores.create({
+                user: admin.id,
+                store: store.id
+            }).catch(error => console.log(error))
         })
         return res.json(store)
     }catch(error){
@@ -39,11 +52,34 @@ exports.findByCompanyId = async ({user}, res)=>{
             },
             order: [
                 ['createdAt', 'DESC']
-            ]
+            ]   
         });
         return res.json(stores)
     }catch(error){
         console.error("request failed at api/stores/company , "+error)
+        return res.status(500).json({error: "Error during fetching stores by company."})
+    }
+}
+
+exports.findByUserStores = async ({user}, res)=>{
+    try{
+        const stores = await Stores.findAll({
+            where : {
+                '$UserStores.user$': {[Op.eq]: user.id}
+            },
+            include: [
+                {
+                    model: UserStores,
+                    as: 'UserStores'
+                }
+            ],
+            order: [
+                ['createdAt', 'DESC']
+            ]   
+        });
+        return res.json(stores)
+    }catch(error){
+        console.error("request failed at api/stores/userStores , "+error)
         return res.status(500).json({error: "Error during fetching stores by company."})
     }
 }

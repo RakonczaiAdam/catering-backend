@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users, RefreshToken, Companies } = require('../models')
+const { Users, RefreshToken, Companies, Stores, UserStores } = require('../models')
 const { registerUser } = require('../services/userService')
 
 exports.getToken = async (req, res) => {
@@ -25,6 +25,7 @@ exports.getToken = async (req, res) => {
                 id: user.id, 
                 company: user.company,
                 userName: user.userName,
+                isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             })
@@ -54,6 +55,7 @@ exports.loginUser = async ({body}, res) => {
                 id: user.id, 
                 company: user.company,
                 userName: user.userName,
+                isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             })
@@ -61,6 +63,7 @@ exports.loginUser = async ({body}, res) => {
                 id: user.id, 
                 company: user.company,
                 userName: user.userName,
+                isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt
             }, process.env.REFRESH_TOKEN_SECRET)
@@ -99,7 +102,26 @@ exports.registerUser = async (req, res) =>{
         if(req.user == null){
             return res.status(403).json({})
         }
-        return registerUser(req.body)
+        const registeredUser = await registerUser({
+            company: req.user.company,
+            userName: req.body.userName,
+            password: req.body.password,
+            isAdmin: req.body.isAdmin,
+        })
+        if(registeredUser.isAdmin){
+            const stores = await Stores.findAll({
+                where: {
+                    company: req.user.company
+                }
+            })
+            stores.map(store =>{
+                UserStores.create({
+                    user: registeredUser.id,
+                    store: store.id
+                })
+            })
+        }
+        return res.json(registeredUser)
     }catch(error){
         console.error("request failed: api/users/registration, "+ error)
         return res.status(500).json({error: "Registration failed."})
@@ -117,7 +139,7 @@ exports.findAllUser = async (req, res) =>{
 }
 
 function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '20s'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'})
 } 
 
 // Middleware example, we can use req.user because authenticateToken was added inside route
@@ -132,5 +154,37 @@ exports.findUser = async (req, res) =>{
     }catch(error){
         console.error(error)
         return res.status(500).json({error: "inside findUser"})
+    }
+}
+
+exports.findUsersByCompany = async ({user}, res) =>{
+    try{
+        const insertedUser = await Users.findAll({
+            where:{
+                company: user.company
+            },
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        })
+        return res.json(insertedUser)
+    }catch(error){
+        console.error(error)
+        return res.status(500).json({error: "inside findUser"})
+    }
+}
+
+exports.deleteUserById = async (req, res)=>{
+    try{
+        const {userId: id} = req.params
+        const deletedRows = await Users.destroy({
+            where: {
+                id: id
+            }
+        })
+        return res.json(deletedRows)
+    }catch(error){
+        console.error(error)
+        return res.status(500).json({error: "user delete error"})
     }
 }

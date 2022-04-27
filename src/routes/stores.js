@@ -8,6 +8,8 @@ router.get("/", StoreController.findAllStore)
 
 router.get("/company", authenticateToken, StoreController.findByCompanyId)
 
+router.get("/userStores", authenticateToken, StoreController.findByUserStores)
+
 router.get("/id/:storeId", StoreController.findByStoreId)
 
 router.put("/update/:storeId", ()=>{})
