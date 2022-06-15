@@ -14,8 +14,8 @@ exports.createItem = async (req, res)=>{
                 }
             })
             const items = []
-            stores.map(s=>{
-                const item = createItem({
+            stores.map(async s=>{
+                const item = await createItem({
                         itemName: itemName,
                         price: price,
                         store: s.id,
@@ -27,7 +27,7 @@ exports.createItem = async (req, res)=>{
             })
             return res.status(200).json(items)
         }
-        const item = createItem({
+        const item = await createItem({
                 itemName: itemName,
                 price: price,
                 store: store,

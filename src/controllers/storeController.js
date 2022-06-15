@@ -1,5 +1,5 @@
 const res = require('express/lib/response');
-const { Stores, UserStores, Users } = require('../models')
+const { Stores, UserStores, Users, Rooms } = require('../models')
 const { Op } = require('sequelize')
 
 exports.createStore = async (req, res)=>{
@@ -22,10 +22,14 @@ exports.createStore = async (req, res)=>{
             }
         })
         admins.map(async admin=>{
-            const userStore = await UserStores.create({
+            await UserStores.create({
                 user: admin.id,
                 store: store.id
             }).catch(error => console.log(error))
+        })
+        await Rooms.create({
+            roomName: storeName+"room",
+            store: store.id
         })
         return res.json(store)
     }catch(error){

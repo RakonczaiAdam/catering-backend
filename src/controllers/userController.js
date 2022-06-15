@@ -114,8 +114,8 @@ exports.registerUser = async (req, res) =>{
                     company: req.user.company
                 }
             })
-            stores.map(store =>{
-                UserStores.create({
+            stores.map(async store =>{
+                await UserStores.create({
                     user: registeredUser.id,
                     store: store.id
                 })
