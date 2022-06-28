@@ -41,7 +41,7 @@ try{
   app.use('/api', routes)
 
   app.listen(process.env.PORT || 3001, ()=>{
-    console.log("api running on port 3001")
+    console.log("api running on port "+process.env.PORT || 3001)
   })
   
 }catch(error){
