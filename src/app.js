@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const routes = require('./routes/routes')
 const cors = require('cors')
+const { requestLog } = require('./middlewares/reguestLog')
 
 try{
 
@@ -35,14 +36,16 @@ try{
     console.error("[cors] "+error);
   }
 
-  app.use((req, res, next)=>{
-    console.log(`${req.method} ${req.originalUrl}`)
-    next()
-  })
+  // app.use((req, res, next)=>{
+  //   console.log(`${req.method} ${req.originalUrl}`)
+  //   next()
+  // })
+
+  app.use(requestLog)
   
   app.use('/api', routes)
 
-  app.listen(3001, ()=>{
+  app.listen(process.env.PORT || 3001, ()=>{
     console.log("api running on port 3001")
   })
   
