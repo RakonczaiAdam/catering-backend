@@ -11,7 +11,13 @@
     "password": "9aa5154d214a11a8fcbb5dc8c51b36c3bdbd58443a72b449c6c00b43b8a78b40",
     "database": "d9m69tcjpsckhn",
     "host": "ec2-63-35-156-160.eu-west-1.compute.amazonaws.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+      }
+   }
   },
   "production": {
     "username": "eqwtakbxkimapo",

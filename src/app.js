@@ -36,11 +36,6 @@ try{
     console.error("[cors] "+error);
   }
 
-  // app.use((req, res, next)=>{
-  //   console.log(`${req.method} ${req.originalUrl}`)
-  //   next()
-  // })
-
   app.use(requestLog)
   
   app.use('/api', routes)
