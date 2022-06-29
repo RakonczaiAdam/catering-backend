@@ -6,15 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/app.js",
-    "migrate:status": "cd src && sequelize db:migrate:status",
-    "migrate": "cd src && npx sequelize-cli db:migrate",
-    "migrate:all": "cd src && npx sequelize-cli db:migrate:all",
-    "migrate:down": "cd src && npx sequelize-cli db:migrate:undo",
-    "migrate:down:all": "cd src && npx sequelize-cli db:migrate:undo:all",
-    "seed": "cd src && npx sequelize-cli db:seed",
-    "seed:all": "cd src && npx sequelize-cli db:seed:all",
-    "seed:down": "cd src && npx sequelize-cli db:seed:undo",
-    "seed:down:all": "cd src && npx sequelize-cli db:seed:undo:all"
+    "migrate:status": "npx sequelize-cli db:migrate:status",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:down": "npx sequelize-cli db:migrate:undo",
+    "migrate:down:all": "npx sequelize-cli db:migrate:undo:all",
+    "seed": "npx sequelize-cli db:seed",
+    "seed:all": "npx sequelize-cli db:seed:all",
+    "seed:down": "npx sequelize-cli db:seed:undo",
+    "seed:down:all": "npx sequelize-cli db:seed:undo:all"
   },
   "repository": {
     "type": "git",

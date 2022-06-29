@@ -20,7 +20,11 @@ try{
 
   try{
     const corsOptions ={
-        origin:'http://localhost:3000', 
+        origin: [
+          'http://localhost:3000', 
+          "https://catering-frontend-staging-2022.herokuapp.com",
+          "https://catering-frontend-2021.herokuapp.com" 
+        ],
         methods: [
             'GET',
             'POST',
@@ -32,21 +36,17 @@ try{
     }
     app.use(cors(corsOptions))
     console.log("[cors] initialized");
+    console.log("[cors] origins: "+corsOptions.origin);
   }catch(error){
     console.error("[cors] "+error);
   }
-
-  // app.use((req, res, next)=>{
-  //   console.log(`${req.method} ${req.originalUrl}`)
-  //   next()
-  // })
 
   app.use(requestLog)
   
   app.use('/api', routes)
 
-  app.listen(process.env.PORT || 3001, ()=>{
-    console.log("api running on port 3001")
+  app.listen((process.env.PORT || 3001), ()=>{
+    console.log("api running on port "+(process.env.PORT || 3001))
   })
   
 }catch(error){

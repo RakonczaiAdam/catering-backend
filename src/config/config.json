@@ -7,17 +7,29 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "root",
-    "database": "catering",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "iyeqbcruyfigyb",
+    "password": "9aa5154d214a11a8fcbb5dc8c51b36c3bdbd58443a72b449c6c00b43b8a78b40",
+    "database": "d9m69tcjpsckhn",
+    "host": "ec2-63-35-156-160.eu-west-1.compute.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+      }
+   }
   },
   "production": {
-    "username": "postgres",
-    "password": "root",
-    "database": "catering",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "eqwtakbxkimapo",
+    "password": "b8f0f002e9336d2a458dd157aba2a8699f3477bb2aa3be73943f397de794bce7",
+    "database": "d1h9j7dlppj0oh",
+    "host": "ec2-63-34-180-86.eu-west-1.compute.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+      }
+   }
   }
 }
