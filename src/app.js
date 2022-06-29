@@ -20,7 +20,11 @@ try{
 
   try{
     const corsOptions ={
-        origin: ['http://localhost:3000', "https://catering-frontend-staging-2022.herokuapp.com"],
+        origin: [
+          'http://localhost:3000', 
+          "https://catering-frontend-staging-2022.herokuapp.com",
+          "https://catering-frontend-2021.herokuapp.com" 
+        ],
         methods: [
             'GET',
             'POST',
