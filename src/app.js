@@ -32,6 +32,7 @@ try{
     }
     app.use(cors(corsOptions))
     console.log("[cors] initialized");
+    console.log("[cors] origins: "+corsOptions.origin);
   }catch(error){
     console.error("[cors] "+error);
   }
@@ -40,8 +41,8 @@ try{
   
   app.use('/api', routes)
 
-  app.listen(process.env.PORT || 3001, ()=>{
-    console.log("api running on port "+process.env.PORT || 3001)
+  app.listen((process.env.PORT || 3001), ()=>{
+    console.log("api running on port "+(process.env.PORT || 3001))
   })
   
 }catch(error){
