@@ -23,7 +23,9 @@ try{
         origin: [
           'http://localhost:3000', 
           "https://catering-frontend-staging-2022.herokuapp.com",
-          "https://catering-frontend-2021.herokuapp.com" 
+          "https://catering-frontend-2021.herokuapp.com",
+          "http://www.catering-software.space",
+          "http://catering-software.space/"
         ],
         methods: [
             'GET',
