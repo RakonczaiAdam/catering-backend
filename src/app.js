@@ -25,7 +25,7 @@ try{
           "https://catering-frontend-staging-2022.herokuapp.com",
           "https://catering-frontend-2021.herokuapp.com",
           "http://www.catering-software.space",
-          "http://catering-software.space/"
+          "http://catering-software.space"
         ],
         methods: [
             'GET',
