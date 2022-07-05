@@ -1,31 +1,42 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Tables', {
+    await queryInterface.createTable('Discounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      tableName: {
+      discountName: {
         type: Sequelize.STRING
       },
-      room: {
+      collection: {
         type: Sequelize.INTEGER,
-        references:{
-          model: 'Rooms',
+        references: {
+          model: 'Collections',
           key: 'id'
         }
       },
-      placeX: {
+      item: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Items',
+          key: 'id'
+        }
+      },
+      category: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Categories',
+          key: 'id'
+        }
+      },
+      value: {
         type: Sequelize.INTEGER
       },
-      placeY: {
+      precentage: {
         type: Sequelize.INTEGER
-      },
-      state: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +49,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Tables');
+    await queryInterface.dropTable('Discounts');
   }
 };

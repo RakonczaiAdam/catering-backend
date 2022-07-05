@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const licences = require('./licences');
 module.exports = (sequelize, DataTypes) => {
   class Companies extends Model {
     /**
@@ -9,23 +10,22 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Stores, Users, CompanyLicences, Coupons}) {
-      // define association here
-      this.hasMany(Stores, {foreignKey: 'id', as: 'storesId'}),
-      this.hasMany(Users, {foreignKey:'id', as: 'userId'}),
-      this.hasMany(CompanyLicences, {foreignKey:'id', as: 'companyLicenceId'}),
-      this.hasMany(Coupons, {foreignKey:'id', as: 'couponsId'})
+    static associate({Locations, Licences, CompanyLicences, Vats, Items, Coupons}) {
+      this.belongsTo(Locations, {foreignKey: 'location'}),
+      this.belongsToMany(Licences, {through: CompanyLicences}),
+      this.hasMany(Stores, {foreignKey: 'company'}),
+      this.hasMany(Users, {foreignKey: 'company'}),
+      this.hasMany(Vats, {foreignKey: 'company'}),
+      this.hasMany(Items, {foreignKey: 'company'}),
+      this.hasMany(Coupons, {foreignKey: 'company'})
     }
   }
   Companies.init({
     companyName: DataTypes.STRING,
-    country: DataTypes.STRING,
-    region: DataTypes.STRING,
-    city: DataTypes.STRING,
-    address: DataTypes.STRING,
+    location: DataTypes.INTEGER,
     taxNumber: DataTypes.STRING,
     email: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING
+    phone: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Companies',

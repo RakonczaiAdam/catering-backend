@@ -1,21 +1,28 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Vats', {
+    await queryInterface.createTable('Printers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      vatName: {
+      printerName: {
         type: Sequelize.STRING
       },
-      collectorNumber: {
-        type: Sequelize.INTEGER
+      share: {
+        type: Sequelize.STRING
       },
-      value: {
-        type: Sequelize.INTEGER
+      isOn: {
+        type: Sequelize.BOOLEAN
+      },
+      store:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Stores',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Vats');
+    await queryInterface.dropTable('Printers');
   }
 };

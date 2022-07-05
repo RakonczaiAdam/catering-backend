@@ -28,7 +28,6 @@ module.exports = {
         }
       },
       transaction: {
-        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Transactions',
@@ -43,8 +42,7 @@ module.exports = {
         }
       },
       unUsed: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

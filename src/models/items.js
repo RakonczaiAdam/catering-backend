@@ -9,22 +9,26 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Stores, LogicalPrinters, Vats, TransactionItems}) {
-      // define association here
-      this.belongsTo(Stores, {foreignKey:'store', as: 'storeId'}),
-      this.belongsTo(LogicalPrinters, {foreignKey:'id', as: 'logicalPrinterId'}),
-      this.belongsTo(Vats, {foreignKey:'id', as: 'vatId'}),
-      this.hasMany(TransactionItems, {foreignKey:'id', as: 'transactionItemId'})
+    static associate({Categories, Vats, Companies, Stores, ItemStores, Printers, ItemPrinters, Deliveries, Transactions, TransactionItems, Discounts}) {
+      this.belongsTo(Categories, {foreignKey: 'category'}),
+      this.belongsTo(Vats, {foreignKey: 'vat'}),
+      this.belongsTo(Companies, {foreignKey: 'company'}),
+      this.belongsToMany(Stores, {through: ItemStores}),
+      this.belongsToMany(Printers, {through: ItemPrinters}),
+      this.hasMany(Deliveries, {foreignKey: 'item'}),
+      this.belongsToMany(Transactions, {through: TransactionItems}),
+      this.hasMany(Discounts, {foreignKey: 'item'})
     }
   }
   Items.init({
     itemName: DataTypes.STRING,
+    color: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    store: DataTypes.INTEGER,
-    logicalPrinter: DataTypes.INTEGER,
+    category: DataTypes.INTEGER,
     vat: DataTypes.INTEGER,
     stock: DataTypes.INTEGER,
-    unit: DataTypes.STRING
+    unit: DataTypes.STRING,
+    company: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Items',

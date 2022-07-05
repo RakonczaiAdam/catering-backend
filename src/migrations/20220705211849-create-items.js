@@ -1,31 +1,48 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CompanyLicences', {
+    await queryInterface.createTable('Items', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      licence: {
-        type: Sequelize.INTEGER,
+      itemName: {
+        type: Sequelize.STRING
+      },
+      color: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.INTEGER
+      },
+      category: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Licences',
+          model: 'Categories',
+          key: 'id'
+        }
+      },
+      vat: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Vats',
           key: 'id'
         }
       },
       company: {
         type: Sequelize.INTEGER,
-        type: Sequelize.INTEGER,
         references: {
-          model: 'Companies',
+          model: 'Categories',
           key: 'id'
         }
       },
-      active: {
-        type: Sequelize.BOOLEAN
+      stock: {
+        type: Sequelize.INTEGER
+      },
+      unit: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('CompanyLicences');
+    await queryInterface.dropTable('Items');
   }
 };

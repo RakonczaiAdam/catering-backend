@@ -3,24 +3,25 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Rooms extends Model {
+  class Printers extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Stores, Printers, RoomPrinters, Tables}) {
+    static associate({Stores, Rooms, RoomPrinters, Items, ItemPrinters}) {
       this.belongsTo(Stores, {foreignKey: 'store'}),
-      this.belongsToMany(Printers, {through: RoomPrinters}),
-      this.hasMany(Tables, {foreignKey: 'room'})
+      this.belongsToMany(Rooms, {through: RoomPrinters}),
+      this.belongsToMany(Items, {through: ItemPrinters})
     }
   }
-  Rooms.init({
-    roomName: DataTypes.STRING,
-    store: DataTypes.INTEGER
+  Printers.init({
+    printerName: DataTypes.STRING,
+    share: DataTypes.STRING,
+    isOn: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'Rooms',
+    modelName: 'Printers',
   });
-  return Rooms;
+  return Printers;
 };

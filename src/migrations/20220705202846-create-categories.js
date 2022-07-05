@@ -1,21 +1,32 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('LogicalPrinters', {
+    await queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      logicalPrinterName: {
+      categoryName: {
         type: Sequelize.STRING
       },
-      share: {
+      color: {
         type: Sequelize.STRING
       },
-      isOn: {
-        type: Sequelize.BOOLEAN
+      parent: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Categories',
+          key: 'id'
+        }
+      },
+      store: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Stores',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('LogicalPrinters');
+    await queryInterface.dropTable('Categories');
   }
 };
