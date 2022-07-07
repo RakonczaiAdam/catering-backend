@@ -38,7 +38,8 @@ try{
     }
     app.use(cors(corsOptions))
     console.log("[cors] initialized");
-    console.log("[cors] origins: "+corsOptions.origin);
+    console.log("[cors] origins: ");
+    console.log(corsOptions.origin)
   }catch(error){
     console.error("[cors] "+error);
   }

@@ -1,20 +1,19 @@
-const { Companies, Users } = require('../models')
+const { Companies } = require('../models')
 const {registerUser} = require('../services/userService')
+const {createLocation} = require('../services/locationService')
 
 exports.registerCompany = async ({body}, res) => {
     try{
         const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = body;
+        const location = await createLocation({country, region, city, address})
         const company = await Companies.create({
             companyName : companyName,
-            country: country,
-            region : region,
-            city: city,
-            address : address,
+            location: location.id,
             taxNumber: taxNumber,
             email: email,
-            phoneNumber: phoneNumber,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            phoneNumber: phoneNumber
+            // createdAt: new Date(),
+            // updatedAt: new Date()
         })
         const user = await registerUser({
             company: company.id,
