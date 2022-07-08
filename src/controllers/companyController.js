@@ -12,8 +12,6 @@ exports.registerCompany = async ({body}, res) => {
             taxNumber: taxNumber,
             email: email,
             phoneNumber: phoneNumber
-            // createdAt: new Date(),
-            // updatedAt: new Date()
         })
         const user = await registerUser({
             company: company.id,
