@@ -8,6 +8,7 @@ const { requestLog } = require('./middlewares/reguestLog')
 try{
 
   console.log('Server starting...')
+  console.log('enviroment: '+process.env.NODE_ENV)
 
   try{
     const bp = require('body-parser')
