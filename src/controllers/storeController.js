@@ -11,9 +11,7 @@ exports.createStore = async (req, res)=>{
             country: country,
             region: region,
             city: city,
-            address: address,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            address: address
         })
         const admins = await Users.findAll({
             where : {

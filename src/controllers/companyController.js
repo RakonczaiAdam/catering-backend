@@ -5,18 +5,23 @@ const {createLocation} = require('../services/locationService')
 exports.registerCompany = async ({body}, res) => {
     try{
         const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = body;
-        const location = await createLocation({country, region, city, address})
+        const location = await createLocation({
+            country, 
+            region, 
+            city, 
+            address
+        })
         const company = await Companies.create({
-            companyName : companyName,
+            companyName,
             location: location.id,
-            taxNumber: taxNumber,
-            email: email,
-            phoneNumber: phoneNumber
+            taxNumber,
+            email,
+            phoneNumber
         })
         const user = await registerUser({
             company: company.id,
             userName: companyName,
-            password: password,
+            password,
             isAdmin: true
         })
         return res.json({company: company, user: user})

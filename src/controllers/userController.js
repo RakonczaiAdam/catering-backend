@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users, RefreshToken, Companies, Stores, UserStores } = require('../models')
-const { registerUser } = require('../services/userService')
+const { Users, RefreshToken, Stores, UserStores } = require('../models')
+const { registerUser, generateAccessToken } = require('../services/userService')
 
 exports.getToken = async (req, res) => {
     try{
@@ -138,9 +138,9 @@ exports.findAllUser = async (req, res) =>{
     }
 }
 
-function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'})
-} 
+// function generateAccessToken(user){
+//     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'})
+// } 
 
 // Middleware example, we can use req.user because authenticateToken was added inside route
 exports.findUser = async (req, res) =>{

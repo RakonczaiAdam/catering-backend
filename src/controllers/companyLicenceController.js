@@ -1,21 +1,11 @@
-const { user } = require('pg/lib/defaults')
-const { CompanyLicences, Companies } = require('../models') 
+const companyService = require('../services/companyService')
 
 exports.createCompanyLicence = async (req, res) => {
     try{
-        const company = await Companies.findOne({
-            where: {
-                id: req.user.company
-            }
-        })
         if(!req.user.isAdmin){
             return res.status(403).json({error: "Only the root user permitted"})
         }
-        const companyLicence = await CompanyLicences.create({
-            licence: req.body.id,
-            company: company.id,
-            active: true
-        })
+        const companyLicence = await companyService.createLicence(req.body.id, req.user.company)
         return res.json(companyLicence)
     }catch(error){
         console.error("Error at api/companyLicences/create , "+ error)
@@ -25,12 +15,7 @@ exports.createCompanyLicence = async (req, res) => {
 
 exports.findLicenceByCompany = async (req, res) => {
     try{
-        const companyLicence = await CompanyLicences.findOne({
-            where: {
-                company: req.user.company,
-                actice: true
-            }
-        })
+        const companyLicence = await companyService.findLicence(req.user.company)
         return res.json(companyLicence)
     }catch(error){
         console.error("Error at api/companyLicences/licence , "+ error)
@@ -40,15 +25,7 @@ exports.findLicenceByCompany = async (req, res) => {
 
 exports.updateLicenceByCompany = async (req, res) => {
     try{
-        const companyLicence = await CompanyLicences.findOne({
-            where: {
-                company: req.user.company,
-                actice: true
-            }
-        })
-        companyLicence.actice = false
-
-        const updatedCompanyLicence = await companyLicence.save()
+        const updatedCompanyLicence = await companyService.deactivateLicence(req.user.company)
         return res.json(updatedCompanyLicence)
     }catch(error){
         console.error("Error at api/companyLicences/update , "+ error)
