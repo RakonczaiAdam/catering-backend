@@ -27,11 +27,11 @@ const update = async (companyData)=>{
     const { companyName, location, taxNumber, email, phone } = companyData
     const company = await findById(companyData.id)
     const updatedCompany = await company.update({
-        companyName: companyName,
-        location: location,
-        taxNumber: taxNumber,
-        email: email,
-        phone: phone
+        companyName,
+        location,
+        taxNumber,
+        email,
+        phone
     })
     return updatedCompany
 }
@@ -63,4 +63,12 @@ const deactivateLicence = async (companyId)=>{
     return deactivatedLicence
 }
 
-module.exports = {create, findById, remove, update, createLicence, findLicence, deactivateLicence}
+module.exports = {
+    create, 
+    findById, 
+    remove, 
+    update, 
+    createLicence, 
+    findLicence, 
+    deactivateLicence
+}

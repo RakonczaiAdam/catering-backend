@@ -1,6 +1,6 @@
-const { Items, Deliveries } = require('../models')
+const { Items, Deliveries, ItemStores } = require('../models')
 
-const createItem = async (itemData)=>{
+const create = async (itemData)=>{
     const item = await Items.create(itemData).then().catch((error)=>console.error(error))
     return item
 }
@@ -12,6 +12,28 @@ const findByCategory = async (categoryId)=>{
         }
     })
     return items
+}
+
+const findByCompany = async (companyId)=>{
+    const items = await Items.findAll({
+        where: {
+            company: companyId
+        }
+    })
+    return items
+}
+
+const findByStore = async (storeId)=>{
+    const items = await ItemStores.findAll({
+        where: {
+            store: storeId
+        },
+        include: [
+            {
+                model: Items
+            }
+        ]
+    })
 }
 
 const findById = async (itemId)=>{
@@ -40,9 +62,6 @@ const updateStock = async (itemId, value)=>{
     return updatedItem
 }
 
-/**
- * @description creates delivery record and updates the item stock value
- */
 const createDelivery = async (deliveryData)=>{
     const delivery = await Deliveries.create(deliveryData)
     return delivery
@@ -66,9 +85,6 @@ const findDeliveries = async (itemId)=>{
     return deliveries
 }
 
-/**
- * @description deletes delivery record and updates the item stock value
- */
 const removeDelivery = async (deliveryId)=>{
     const removedDelivery = await Deliveries.destroy({
         where: {
@@ -78,4 +94,16 @@ const removeDelivery = async (deliveryId)=>{
     return removedDelivery
 }
 
-module.exports = {createItem, findByCategory, findById, remove, updateStock, createDelivery, removeDelivery, findDelivery, findDeliveries}
+module.exports = {
+    create, 
+    findByCategory, 
+    findByCompany,
+    findByStore,
+    findById, 
+    remove, 
+    updateStock, 
+    createDelivery, 
+    removeDelivery, 
+    findDelivery, 
+    findDeliveries
+}

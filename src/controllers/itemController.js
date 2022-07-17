@@ -1,7 +1,7 @@
 const { user } = require('pg/lib/defaults')
 const { Op } = require('sequelize')
 const { Items, Stores } = require('../models')
-const { createItem } = require('../services/itemService')
+const itemService = require('../services/itemService')
 
 exports.createItem = async (req, res)=>{
     try{
@@ -15,7 +15,7 @@ exports.createItem = async (req, res)=>{
             })
             const items = []
             stores.map(async s=>{
-                const item = await createItem({
+                const item = await itemService.create({
                         itemName: itemName,
                         price: price,
                         store: s.id,
@@ -27,7 +27,7 @@ exports.createItem = async (req, res)=>{
             })
             return res.status(200).json(items)
         }
-        const item = await createItem({
+        const item = await itemService.create({
                 itemName: itemName,
                 price: price,
                 store: store,

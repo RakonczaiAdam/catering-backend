@@ -18,6 +18,9 @@ module.exports = {
       start: {
         type: Sequelize.DATE
       },
+      customerName: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

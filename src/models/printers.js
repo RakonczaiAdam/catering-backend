@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   Printers.init({
     printerName: DataTypes.STRING,
     share: DataTypes.STRING,
-    isOn: DataTypes.BOOLEAN
+    isOn: DataTypes.BOOLEAN,
+    store: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Printers',

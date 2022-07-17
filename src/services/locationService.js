@@ -1,6 +1,6 @@
 const { Locations } = require('../models')
 
-const createLocation = async (locationData)=>{
+const create = async (locationData)=>{
     const location = await Locations.create(locationData).then().catch((error)=>console.error(error.message))
     return location
 }
@@ -35,4 +35,4 @@ const update = async (locationData)=>{
     return updatedLocation
 }
 
-module.exports = {createLocation, findById, remove, update}
+module.exports = {create, findById, remove, update}

@@ -40,7 +40,7 @@ const removeRefreshToken = async (refreshToken)=>{
     return deletedToken
 }
 
-const findById = async (companyId, userName)=>{
+const findByName = async (companyId, userName)=>{
     const user = await Users.findOne({
         where : {
             company: companyId,
@@ -50,4 +50,34 @@ const findById = async (companyId, userName)=>{
     return user
 }
 
-module.exports = { registerUser, createAccessToken, findRefreshToken, createRefreshToken, removeRefreshToken, findById }
+const findAllByCompany = async (companyId)=>{
+    const users = await Users.findAll({
+        where:{
+            company: companyId
+        },
+        order: [
+            ['createdAt', 'DESC']
+        ]
+    })
+    return users
+}
+
+const remove = async (userId)=>{
+    const deletedUser = await Users.destroy({
+        where: {
+            id: userId
+        }
+    })
+    return deletedUser
+}
+
+module.exports = { 
+    registerUser, 
+    createAccessToken, 
+    findRefreshToken, 
+    createRefreshToken, 
+    removeRefreshToken, 
+    findByName,
+    findAllByCompany,
+    remove
+}
