@@ -14,11 +14,17 @@ const findById = async (companyId)=>{
     return company
 }
 
+const findAll = async ()=>{
+    const companies = await Companies.findAll();
+    return companies
+}
+
 const remove = async (companyId)=>{
     const removedCompany = await Companies.destroy({
         where: {
             id: companyId
-        }
+        },
+        force: true
     })
     return removedCompany
 }
@@ -66,6 +72,7 @@ const deactivateLicence = async (companyId)=>{
 module.exports = {
     create, 
     findById, 
+    findAll,
     remove, 
     update, 
     createLicence, 
