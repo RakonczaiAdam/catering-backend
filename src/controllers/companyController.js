@@ -2,9 +2,9 @@ const userService = require('../services/userService')
 const locationService = require('../services/locationService')
 const companyService = require('../services/companyService')
 
-const registerCompany = async ({body}, res) => {
+const registerCompany = async (req, res) => {
     try{
-        const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = body;
+        const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = req.body;
         const location = await locationService.create({
             country, 
             region, 
@@ -44,9 +44,9 @@ const findAllCompany = async (req, res) => {
     }
 }
 
-const findCompanyByUser = async ({user}, res) =>{
+const findCompanyByUser = async (req, res) =>{
     try{
-        const company = await companyService.findById(user.company)
+        const company = await companyService.findById(req.user.company)
         return res.json(company);
     }catch(error){
         console.error(error.message);
@@ -54,7 +54,7 @@ const findCompanyByUser = async ({user}, res) =>{
     }
 }
 
-const updateCompanyById = async (req, res)=>{
+const updateCompany = async (req, res)=>{
     try{
         if(!req.user.isAdmin){
             return res.status(400).json({error: "Only admin user can modify data."})
@@ -95,11 +95,36 @@ const addLicence = async (req, res)=>{
     }
 }
 
+const findLicenceByCompany = async (req, res)=>{
+    try{
+        const licence = await companyService.findLicence(req.user.company)
+        return res.json(licence)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deactivateLicence = async (req, res)=>{
+    try{
+        if(!req.user.isAdmin){
+            return res.status(400).json({error: "Only admin user can deactivate licence"})
+        }
+        const licence = await companyService.deactivateLicence(req.user.company)
+        return res.json(licence)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
 module.exports = {
     registerCompany,
     findAllCompany,
     findCompanyByUser,
-    updateCompanyById,
+    updateCompany,
     removeCompany,
-    addLicence
+    addLicence,
+    findLicenceByCompany,
+    deactivateLicence
 }

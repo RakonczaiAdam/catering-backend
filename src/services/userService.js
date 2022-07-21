@@ -10,7 +10,7 @@ const registerUser = async (userData) =>{
 }
 
 const createAccessToken = async (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'})
 } 
 
 const createRefreshToken = async (refreshToken)=>{
@@ -40,11 +40,30 @@ const removeRefreshToken = async (refreshToken)=>{
     return deletedToken
 }
 
+const findAdmins = async (companyId)=>{
+    const admins = await Users.findAll({
+        where: {
+            company: companyId,
+            isAdmin: true
+        }
+    })
+    return admins
+}
+
 const findByName = async (companyId, userName)=>{
     const user = await Users.findOne({
         where : {
             company: companyId,
             userName: userName
+        }
+    })
+    return user
+}
+
+const findById = async (userId)=>{
+    const user = await Users.findOne({
+        where : {
+            id: userId
         }
     })
     return user
@@ -78,6 +97,8 @@ module.exports = {
     createRefreshToken, 
     removeRefreshToken, 
     findByName,
+    findById,
     findAllByCompany,
+    findAdmins,
     remove
 }

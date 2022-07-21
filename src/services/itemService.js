@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { Items, Deliveries, ItemStores } = require('../models')
 
 const create = async (itemData)=>{
@@ -54,6 +55,22 @@ const remove = async (itemId)=>{
     return deletedItem
 }
 
+const update = async (itemData)=>{
+    const { id, itemName, color, price, category, vat, stock, unit, company } = itemData
+    const item = await findById(id)
+    const updatedItem = await item.update({
+        itemName,
+        color,
+        price,
+        category,
+        vat,
+        stock,
+        unit,
+        company
+    })
+    return updatedItem
+}
+
 const updateStock = async (itemId, value)=>{
     const item = await findById(itemId)
     const updatedItem = await item.update({
@@ -94,6 +111,16 @@ const removeDelivery = async (deliveryId)=>{
     return removedDelivery
 }
 
+const removeDeliveries = async (date, itemId)=>{
+    const removedDeliveries = await Deliveries.destroy({
+        where: {
+            received: {[Op.lte]: date},
+            item: itemId
+        }
+    })
+    return removedDeliveries
+}
+
 module.exports = {
     create, 
     findByCategory, 
@@ -101,9 +128,11 @@ module.exports = {
     findByStore,
     findById, 
     remove, 
+    update,
     updateStock, 
     createDelivery, 
     removeDelivery, 
+    removeDeliveries,
     findDelivery, 
     findDeliveries
 }

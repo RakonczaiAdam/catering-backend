@@ -1,4 +1,4 @@
-const { Companies, CompanyLicences } = require('../models')
+const { Companies, CompanyLicences, Licences } = require('../models')
 
 const create = async (companyData)=>{
     const company = await Companies.create(companyData).then().catch((error)=>console.error(error))
@@ -23,8 +23,7 @@ const remove = async (companyId)=>{
     const removedCompany = await Companies.destroy({
         where: {
             id: companyId
-        },
-        force: true
+        }
     })
     return removedCompany
 }
@@ -56,7 +55,12 @@ const findLicence = async (companyId)=>{
         where: {
             company: companyId,
             active: true
-        }
+        },
+        include: [
+            {
+                model: Licences
+            }
+        ]
     })
     return companyLicence
 }

@@ -1,19 +1,25 @@
 const router = require('express').Router()
-const StoreController = require('../controllers/storeController')
-const { authenticateToken, authenticateTokenTEST } = require('../middlewares/jwt')
+const storeController = require('../controllers/storeController')
+const { authenticateToken } = require('../middlewares/jwt')
 
-router.post('/create', authenticateToken, StoreController.createStore)
+router.post('/create', authenticateToken, storeController.createStore)
 
-router.get("/", StoreController.findAllStore)
+router.get("/", authenticateToken, storeController.findByUser)
 
-router.get("/company", authenticateToken, StoreController.findByCompanyId)
+router.put("/update/:storeId", authenticateToken, storeController.updateStore)
 
-router.get("/userStores", authenticateToken, StoreController.findByUserStores)
+router.delete("/delete/:storeId", storeController.deleteStore)
 
-router.get("/id/:storeId", StoreController.findByStoreId)
+router.post('/addUser', authenticateToken, storeController.addUser)
 
-router.put("/update/:storeId", ()=>{})
+router.get("/findUsers/:storeId", authenticateToken, storeController.findUsers)
 
-router.delete("/delete/:storeId", StoreController.deleteStore)
+router.delete("/deleteUser/:userStoreId", authenticateToken, storeController.deleteUser)
+
+router.post('/addItem', authenticateToken, storeController.addItem)
+
+router.get("/findItems/:itemId", authenticateToken, storeController.findItems)
+
+router.delete("/deleteItem/:itemStoreId", authenticateToken, storeController.deleteItem)
 
 module.exports = router
