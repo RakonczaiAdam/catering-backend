@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { Users, RefreshToken } = require('../models');
+const { Users, RefreshTokens } = require('../models');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (userData) =>{
@@ -14,7 +14,7 @@ const createAccessToken = async (user) => {
 } 
 
 const createRefreshToken = async (refreshToken)=>{
-    const dbToken = await RefreshToken.create({
+    const dbToken = await RefreshTokens.create({
         token: refreshToken,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -23,7 +23,7 @@ const createRefreshToken = async (refreshToken)=>{
 }
 
 const findRefreshToken = async (refreshToken)=>{
-    const dbToken = await RefreshToken.findOne({
+    const dbToken = await RefreshTokens.findOne({
         where: {
             token: refreshToken
         }
@@ -32,7 +32,7 @@ const findRefreshToken = async (refreshToken)=>{
 }
 
 const removeRefreshToken = async (refreshToken)=>{
-    const deletedToken = await RefreshToken.destroy({
+    const deletedToken = await RefreshTokens.destroy({
         where : {
             token: refreshToken
         }

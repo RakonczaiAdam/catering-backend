@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users, RefreshToken, Stores, UserStores } = require('../models')
-const { registerUser, generateAccessToken } = require('../services/userService')
 const userService = require('../services/userService')
 const storeService = require('../services/storeService')
 
