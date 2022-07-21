@@ -2,7 +2,6 @@ const storeService = require('../services/storeService')
 const locationService = require('../services/locationService')
 const userService = require('../services/userService')
 const roomService = require("../services/roomService")
-const locationService = require('../services/locationService')
 
 const createStore = async (req, res)=>{
     try{
