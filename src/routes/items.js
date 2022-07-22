@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const { authenticateToken } = require('../middlewares/jwt')
 const itemController = require('../controllers/itemController')
+const { hasAdminPrivilage } = require('../middlewares/permission')
 
-router.post('/create', authenticateToken, itemController.createItem)
+router.post('/create', [authenticateToken, hasAdminPrivilage], itemController.createItem)
 
 router.get('/company', authenticateToken, itemController.findItemsByCompany)
 
@@ -10,15 +11,15 @@ router.get('/category/:categoryId', authenticateToken, itemController.findItemsB
 
 router.get('/category/:storeId', authenticateToken, itemController.findItemsByStore)
 
-router.delete("/delete/:itemId", authenticateToken, itemController.deleteItem)
+router.delete("/delete/:itemId", [authenticateToken, hasAdminPrivilage], itemController.deleteItem)
 
-router.put("/update/:itemId", authenticateToken, itemController.updateItem)
+router.put("/update/:itemId", [authenticateToken, hasAdminPrivilage], itemController.updateItem)
 
-router.post('/addDelivery', authenticateToken, itemController.addDelivery)
+router.post('/addDelivery', [authenticateToken, hasAdminPrivilage], itemController.addDelivery)
 
-router.delete("/deleteDelivery/:deliveryId", authenticateToken, itemController.deleteDelivery)
+router.delete("/deleteDelivery/:deliveryId", [authenticateToken, hasAdminPrivilage], itemController.deleteDelivery)
 
-router.delete("/deleteOldDeliveries/:itemId", authenticateToken, itemController.deleteOldDeliveries)
+router.delete("/deleteOldDeliveries/:itemId", [authenticateToken, hasAdminPrivilage], itemController.deleteOldDeliveries)
 
 router.get("/findDeliveriesByItem/:itemId", authenticateToken, itemController.findDeliveriesByItem)
 

@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService')
-const storeService = require('../services/storeService')
+const storeService = require('../services/storeService');
+const { NameAlreadyExistError } = require('../helpers/error');
 
 const getToken = async (req, res) => {
     try{
@@ -28,7 +29,8 @@ const getToken = async (req, res) => {
             return res.json({accessToken: accessToken})
         })
     }catch(error){
-        console.error(error)
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
@@ -64,8 +66,8 @@ const loginUser = async ({body}, res) => {
             return res.status(400).json({error: "Wrong password"})
         }
     }catch(error){
-        console.error('Login failed, api/users/login , '+error)
-        return res.status(500).json({error: "Login failed."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
@@ -75,8 +77,8 @@ const logoutUser = async (req, res) =>{
         const deletedToken = await userService.removeRefreshToken(refreshToken)
         return res.json({deletedTokens: deletedToken} )
     }catch(error){
-        console.error("Logout failed api/users/logout , "+error)
-        return res.status(500).json({error: "Logout failed."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
  
@@ -87,7 +89,7 @@ const registerUser = async (req, res) =>{
         }
         // Ha létezik ilyen user akkor nem regisztrálunk új user-t
         if(await userService.findByName(req.user.company, req.body.userName)){
-            return res.status(403).json({error: "username already used"})
+            return res.status(403).json({error: new NameAlreadyExistError("user")})
         }
         const registeredUser = await userService.registerUser({
             company: req.user.company,
@@ -106,8 +108,8 @@ const registerUser = async (req, res) =>{
         }
         return res.json(registeredUser)
     }catch(error){
-        console.error("request failed: api/users/registration, "+ error)
-        return res.status(500).json({error: "Registration failed."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
@@ -116,8 +118,8 @@ const findUser = async (req, res) =>{
         const user = await userService.findById(req.user.id)
         return res.json(user)
     }catch(error){
-        console.error(error)
-        return res.status(500).json({error: "inside findUser"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
@@ -126,8 +128,8 @@ const findUsersByCompany = async ({user}, res) =>{
         const insertedUser = await userService.findAllByCompany(user.company)
         return res.json(insertedUser)
     }catch(error){
-        console.error(error)
-        return res.status(500).json({error: "inside findUser"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
@@ -137,8 +139,8 @@ const deleteUser = async (req, res)=>{
         const deletedRows = await userService.remove(id)
         return res.json(deletedRows)
     }catch(error){
-        console.error(error)
-        return res.status(500).json({error: "user delete error"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 

@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const licenceController = require('../controllers/licenceController')
+const { authenticateToken } = require('../middlewares/jwt')
 
-router.get("/", licenceController.findAllLicence)
+router.get("/", authenticateToken, licenceController.findAllLicence)
 
 router.get("/:licenceId", licenceController.findLicenceById)
 

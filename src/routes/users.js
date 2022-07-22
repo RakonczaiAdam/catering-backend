@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const userController = require('../controllers/userController')
 const { authenticateToken } = require('../middlewares/jwt')
+const { hasAdminPrivilage } = require('../middlewares/permission')
 
-router.post('/registration', authenticateToken, userController.registerUser)
+router.post('/registration', [authenticateToken, hasAdminPrivilage], userController.registerUser)
 
 router.get('/getOne', authenticateToken, userController.findUser)
 

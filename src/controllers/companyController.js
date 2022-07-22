@@ -1,6 +1,7 @@
 const userService = require('../services/userService')
 const locationService = require('../services/locationService')
-const companyService = require('../services/companyService')
+const companyService = require('../services/companyService');
+const { NameAlreadyExistError } = require('../helpers/error');
 
 const registerCompany = async (req, res) => {
     try{
@@ -27,7 +28,7 @@ const registerCompany = async (req, res) => {
         return res.json({company: company, user: user})
     }catch(error){
         if(error.name === "SequelizeUniqueConstraintError"){
-            return res.status(500).json({error: "UNIQUE_FIELD_CONFLICT"})
+            return res.status(500).json({error: new NameAlreadyExistError()})
         }
         console.error(error.message)
         return res.status(500).json({error: error.message})
@@ -56,9 +57,6 @@ const findCompanyByUser = async (req, res) =>{
 
 const updateCompany = async (req, res)=>{
     try{
-        if(!req.user.isAdmin){
-            return res.status(400).json({error: "Only admin user can modify data."})
-        }
         const { companyId: id } = req.params
         const company = await companyService.update({id, ...req.body})
         return res.json(company)
@@ -70,9 +68,6 @@ const updateCompany = async (req, res)=>{
 
 const removeCompany = async (req, res)=>{
     try{
-        if(!req.user.isAdmin){
-            return res.status(400).json({error: "Only admin user can modify data."})
-        }
         const { companyId: id } = req.params
         const company = companyService.remove(id)
         return res.json(company)
@@ -84,9 +79,6 @@ const removeCompany = async (req, res)=>{
 
 const addLicence = async (req, res)=>{
     try{
-        if(!req.user.isAdmin){
-            return res.status(400).json({error: "Only admin user can add licence"})
-        }
         const companyLicence = await companyService.createLicence(req.user.company, req.params.licenceId)
         return res.jsno(companyLicence)
     }catch(error){
@@ -107,9 +99,6 @@ const findLicenceByCompany = async (req, res)=>{
 
 const deactivateLicence = async (req, res)=>{
     try{
-        if(!req.user.isAdmin){
-            return res.status(400).json({error: "Only admin user can deactivate licence"})
-        }
         const licence = await companyService.deactivateLicence(req.user.company)
         return res.json(licence)
     }catch(error){

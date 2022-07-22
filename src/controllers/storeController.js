@@ -151,7 +151,7 @@ const deleteItem = async (req, res)=>{
 
 const findItems = async (req, res)=>{
     try{
-        const { itemeId: id } = req.params
+        const { storeId: id } = req.params
         const itemStore = await storeService.findItems(id)
         return itemStore
     }catch(error){
