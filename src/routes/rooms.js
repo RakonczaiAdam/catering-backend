@@ -3,7 +3,7 @@ const roomController = require('../controllers/roomController')
 const { authenticateToken } = require('../middlewares/jwt')
 const { hasAdminPrivilage } = require('../middlewares/permission')
 
-router.create('/create', [authenticateToken, hasAdminPrivilage], roomController.createRoom)
+router.post('/create', [authenticateToken, hasAdminPrivilage], roomController.createRoom)
 
 router.get('/findByStore/:storeId', authenticateToken, roomController.findByStore)
 
