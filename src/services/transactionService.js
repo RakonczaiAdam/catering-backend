@@ -14,12 +14,45 @@ const findById = async (transactionId)=>{
     return transaction
 }
 
-const addCollection = async (transactionId, collection)=>{
-    const transaction = await findById(transactionId)
+const findByTable = async (tableId)=>{
+    const transaction = await Transactions.findOne({
+        where: {
+            tableUsed: tableId,
+            closedAt: null
+        }
+    })
+    return transaction
+}
+
+const addCollection = async (tableId, collection)=>{
+    const transaction = await findByTable(tableId)
     const updatedTransaction = await transaction.update({
         collection
     })
     return updatedTransaction
 }
 
-module.exports = { create, findById, addCollection}
+const closeTransaction = async (tableId)=>{
+    const transaction = await findByTable(tableId)
+    const updatedTransaction = await transaction.update({
+        closedAt: new Date()
+    })
+    return updatedTransaction
+}
+
+const updateTable = async (tableId, newTable)=>{
+    const transaction = await findByTable(tableId)
+    const updatedTransaction = await transaction.update({
+        tableUsed: newTable
+    })
+    return updatedTransaction
+}
+
+module.exports = { 
+    create, 
+    findById, 
+    findByTable,
+    addCollection,
+    closeTransaction,
+    updateTable
+}

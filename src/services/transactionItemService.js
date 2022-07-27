@@ -33,12 +33,10 @@ const remove = async (transactionItemId)=>{
 }
 
 const update = async (transactionItemData)=>{
-    const { id, transaction, item, amount} = transactionItemData
+    const { id, transaction} = transactionItemData
     const transactionItem = await findById(id)
     const updatedTransactionItem = await transactionItem.update({
-        transaction,
-        item,
-        amount
+        transaction
     })
     return updatedTransactionItem
 }

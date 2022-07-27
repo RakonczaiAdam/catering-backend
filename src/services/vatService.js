@@ -23,6 +23,18 @@ const findAllByCompany = async (companyId)=>{
     return vats
 }
 
+const update = async (vatData)=>{
+    const { id, vatName, collectornumber, value, company } = vatData
+    const vat = await findById(id)
+    const updatedVat = await vat.update({
+        vatName,
+        collectornumber,
+        value,
+        company
+    })
+    return updatedVat
+}
+
 const remove = async (vatId)=>{
     const deletedVat = await Vats.destroy({
         where: {
@@ -32,4 +44,10 @@ const remove = async (vatId)=>{
     return deletedVat
 }
 
-module.exports = { create, findById, findAllByCompany, remove }
+module.exports = { 
+    create, 
+    findById, 
+    findAllByCompany,
+    update, 
+    remove 
+}
