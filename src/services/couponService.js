@@ -14,17 +14,17 @@ const findByCompany = async (companyId)=>{
     return coupons
 }
 
-const findById = async (couponId)=>{
+const findByCode = async (activationCode)=>{
     const coupon = await Coupons.findOne({
         where: {
-            id: couponId
+            activationCode
         }
     })
     return coupon
 }
 
-const use = async (couponId)=>{
-    const coupon = await findById(couponId)
+const use = async (activationCode)=>{
+    const coupon = await findByCode(activationCode)
     const updatedCoupon = await coupon.update({
         unUsed: false
     })
@@ -34,6 +34,6 @@ const use = async (couponId)=>{
 module.exports = {
     create,
     findByCompany,
-    findById,
+    findByCode,
     use
 }

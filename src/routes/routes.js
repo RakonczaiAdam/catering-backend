@@ -10,6 +10,7 @@ const printers = require('./printers')
 const tables = require('./tables')
 const vats = require('./vats')
 const transactions = require('./transactions')
+const coupons = require('./coupons')
 
 router.use('/users', users)
 router.use('/companies', companies)
@@ -21,5 +22,6 @@ router.use('/printers', printers)
 router.use('/tables', tables)
 router.add('/vats', vats)
 router.add('/transactions', transactions)
+router.add('/coupons', coupons)
 
 module.exports = router
