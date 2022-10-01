@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService')
 const storeService = require('../services/storeService');
-const { NameAlreadyExistError } = require('../helpers/error');
+const { FieldConflictError } = require('../helpers/error');
 
 const getToken = async (req, res) => {
     try{
@@ -89,7 +89,7 @@ const registerUser = async (req, res) =>{
         }
         // Ha létezik ilyen user akkor nem regisztrálunk új user-t
         if(await userService.findByName(req.user.company, req.body.userName)){
-            return res.status(403).json({error: new NameAlreadyExistError("user")})
+            return res.status(403).json({error: new FieldConflictError("User", "name")})
         }
         const registeredUser = await userService.registerUser({
             company: req.user.company,

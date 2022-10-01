@@ -23,12 +23,13 @@ const findByCode = async (activationCode)=>{
     return coupon
 }
 
-const use = async (activationCode)=>{
+const use = async (activationCode, transactionId)=>{
     const coupon = await findByCode(activationCode)
     const updatedCoupon = await coupon.update({
-        unUsed: false
+        unUsed: false,
+        transaction: transactionId
     })
-    return updatedCoupon
+    return updatedCoupon;
 }
 
 module.exports = {

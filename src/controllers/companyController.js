@@ -1,7 +1,7 @@
 const userService = require('../services/userService')
 const locationService = require('../services/locationService')
 const companyService = require('../services/companyService');
-const { NameAlreadyExistError } = require('../helpers/error');
+const { FieldConflictError } = require('../helpers/error');
 
 const registerCompany = async (req, res) => {
     try{
@@ -28,7 +28,7 @@ const registerCompany = async (req, res) => {
         return res.json({company: company, user: user})
     }catch(error){
         if(error.name === "SequelizeUniqueConstraintError"){
-            return res.status(500).json({error: new NameAlreadyExistError()})
+            return res.status(500).json({error: new FieldConflictError("Company", "name")})
         }
         console.error(error.message)
         return res.status(500).json({error: error.message})

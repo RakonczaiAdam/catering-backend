@@ -120,7 +120,7 @@ const separateTransactionItems = async (req, res)=>{
             collection: transaction.collection,
             closedAt: new Date()
         })
-        transactionItems.forEach(transactionItem => {
+        transactionItems.forEach(async transactionItem => {
             if(separateIds.includes(transactionItem.id)){
                 await transactionItemService.update({
                     transaction: newTransaction.id
