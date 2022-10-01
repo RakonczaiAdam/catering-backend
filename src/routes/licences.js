@@ -1,14 +1,15 @@
 const router = require('express').Router()
-const LicenceController = require('../controllers/licenceController')
+const licenceController = require('../controllers/licenceController')
+const { authenticateToken } = require('../middlewares/jwt')
 
-router.get("/", LicenceController.findAllLicence)
+router.get("/", authenticateToken, licenceController.findAllLicence)
 
-router.get("/:licenceId", LicenceController.findLicenceById)
+router.get("/:licenceId", licenceController.findLicenceById)
 
-router.post("/create", LicenceController.createLicence)
+router.post("/create", licenceController.createLicence)
 
-router.delete("/delete/:licenceId", LicenceController.deleteLicence)
+router.delete("/delete/:licenceId", licenceController.deleteLicence)
 
-router.put("/update/:licenceId", LicenceController.updateLicence)
+router.put("/update/:licenceId", licenceController.updateLicence)
 
 module.exports = router

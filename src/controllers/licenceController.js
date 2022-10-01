@@ -1,80 +1,62 @@
-const { Licences } = require('../models')
+const licenceService = require('../services/licenceService')
 
-exports.findAllLicence = async (req, res) => {
+const findAllLicence = async (req, res) => {
     try{
-        const licences = await Licences.findAll();
+        const licences = await licenceService.findAll()
         return res.json(licences)
     }catch(error){
-        console.error("Error at api/licences/ , "+error)
-        return res.status(500).json({error: "Error at api/licences/"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.findLicenceById = async ({ params }, res) => {
+const findLicenceById = async ({ params }, res) => {
     try{
         const { licenceId: id } = params
-        const licence = await Licences.findOne({
-            where: {
-                id: id
-            }
-        })
-        if(licence == null){
-            return res.status(400).json({error: "No licence with id "+ id})
-        }else{
-            return res.json(licence)
-        }
-    }catch(error){
-        console.error("Error at api/licences/:licenceId , "+error)
-        return res.status(500).json({error: "Error at api/licences/:licenceId"})
-    }
-}
-
-exports.createLicence = async (req, res) => {
-    try{
-        const licence = await Licences.create(req.body)
+        const licence = await licenceService.findById(id)
         return res.json(licence)
     }catch(error){
-        console.error("Error at api/licences/create , "+error)
-        return res.status(500).json({error: "Error at api/licences/create"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.deleteLicence = async ({ params }, res) => {
+const createLicence = async (req, res) => {
+    try{
+        const licence = await licenceService.create(req.body)
+        return res.json(licence)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteLicence = async ({ params }, res) => {
     try{
         const { licenceId: id } = params
-        const deletedLicence = await Licences.destroy({
-            where: {
-                id : id
-            }
-        })
+        const deletedLicence = await licenceService.remove(id)
         return res.json(deletedLicence)
     }catch(error){
-        console.error("Error at api/licences/delete/:licenceId , "+error)
-        return res.status(500).json({error: "Error at api/licences/delete/:licenceId"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.updateLicence = async ({ params, body }, res) => {
+const updateLicence = async ({ params, body }, res) => {
     try{
         const {licenceId: id} = params
-        const licence = await Licences.findOne({
-            where: {
-                id: id
-            }
-        })
-        if(licence == null){
-            return res.status(400).json({error: "No licence with id "+ id})
-        }
-        licence.licenceName = body.licenceName
-        licence.userLimit = body.userLimit
-        licence.period = body.period
-        licence.price = body.price
-        licence.currency = body.currency
-        
-        const updatedLicence = await licence.save()
+        const updatedLicence = await licenceService.update({id, ...body})
         return res.json(updatedLicence)
     }catch(error){
-        console.error("Error at api/licences/update/:licenceId , "+error)
-        return res.status(500).json({error: "Error at api/licences/update/:licenceId"})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
+}
+
+module.exports = {
+    findAllLicence,
+    findLicenceById,
+    createLicence,
+    deleteLicence,
+    updateLicence
 }

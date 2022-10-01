@@ -1,118 +1,175 @@
-const res = require('express/lib/response');
-const { Stores, UserStores, Users, Rooms } = require('../models')
-const { Op } = require('sequelize')
+const storeService = require('../services/storeService')
+const locationService = require('../services/locationService')
+const userService = require('../services/userService')
+const roomService = require("../services/roomService")
 
-exports.createStore = async (req, res)=>{
+const createStore = async (req, res)=>{
     try{
         const {storeName, country, region, city, address} = req.body;
-        const store = await Stores.create({
-            storeName: storeName,
+        const location = await locationService({
+            country,
+            region,
+            city,
+            address
+        })
+        const store = await storeService.create({
+            storeName,
             company: req.user.company,
-            country: country,
-            region: region,
-            city: city,
-            address: address,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            location: location.id
         })
-        const admins = await Users.findAll({
-            where : {
-                isAdmin: true,
-                company: req.user.company
-            }
-        })
+        const admins = await userService.findAdmins(req.user.company)
         admins.map(async admin=>{
-            await UserStores.create({
+            await storeService.addUser({
                 user: admin.id,
                 store: store.id
             }).catch(error => console.log(error))
         })
-        await Rooms.create({
+        await roomService.create({
             roomName: storeName+"room",
             store: store.id
         })
         return res.json(store)
     }catch(error){
-        console.error("request failed at api/stores/create , "+error);
-        return res.status(500).json({error: "Error during creating store."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.findAllStore = async (req, res)=>{
+const findByCompany = async (req, res)=>{
     try{
-        const stores = await Stores.findAll();
+        const stores = await storeService.findAllByCompany(req.user.company)
         return res.json(stores)
     }catch(error){
-        console.error("request failed at api/stores/ , "+error)
-        return res.status(500).json({error: "Error during fetching stores."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.findByCompanyId = async ({user}, res)=>{
+const findByUser = async (req, res)=>{
     try{
-        const stores = await Stores.findAll({
-            where : {
-                company: user.company
-            },
-            order: [
-                ['createdAt', 'DESC']
-            ]   
-        });
+        const stores = await storeService.findByUser(req.user.id)
         return res.json(stores)
     }catch(error){
-        console.error("request failed at api/stores/company , "+error)
-        return res.status(500).json({error: "Error during fetching stores by company."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.findByUserStores = async ({user}, res)=>{
+const updateStore = async (req, res)=>{
     try{
-        const stores = await Stores.findAll({
-            where : {
-                '$UserStores.user$': {[Op.eq]: user.id}
-            },
-            include: [
-                {
-                    model: UserStores,
-                    as: 'UserStores'
-                }
-            ],
-            order: [
-                ['createdAt', 'DESC']
-            ]   
-        });
-        return res.json(stores)
-    }catch(error){
-        console.error("request failed at api/stores/userStores , "+error)
-        return res.status(500).json({error: "Error during fetching stores by company."})
-    }
-}
-
-exports.findByStoreId = async ({params}, res)=>{
-    try{
-        const { storeId: store } = params;
-        const returnedStore = await Stores.findOne({
-            where : {
-                id: store
-            }
-        });
-        return res.json(returnedStore)
-    }catch(error){
-        console.error("request failed at api/stores/storeId , "+error)
-        return res.status(500).json({error: "Error during getting stores by id."})
-    }
-}
-
-exports.deleteStore = async({params}, res)=>{
-    try{
-        const deletedRows = await Stores.destroy({
-            where: {
-                id: params.storeId
-            }
+        const {storeId: id} = req.params
+        const { storeName, country, region, city, address } = req.body
+        const store = await storeService.findById(id)
+        const updatedLocation = await locationService.update({
+            id: store.location,
+            country,
+            region,
+            city,
+            address
         })
+        const updatedStore = await storeService.update({
+            id: store.id,
+            storeName,
+        })
+        return {updatedStore, updatedLocation}
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteStore = async(req, res)=>{
+    try{
+        const { storeId: id } = req.params
+        const deletedRows = await storeService.remove(id)
         return res.json(deletedRows)
     }catch(error){
-        console.error("request failed at api/stores/delete/id , "+error)
-        return res.status(500).json({error: "Error during delete stores by id."})
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
+}
+
+const addUser = async (req, res)=>{
+    try{
+        const userStore = await storeService.addUser({
+            user: req.body.user,
+            store: req.body.store
+        })
+        return userStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteUser = async (req, res)=>{
+    try{
+        const { userStoreId: id} = req.params
+        const userStore = await storeService.removeUser(id)
+        return userStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const findUsers = async (req, res)=>{
+    try{
+        const { storeId: id } = req.params
+        const userStore = await storeService.findUsers(id)
+        return userStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+
+const addItem = async (req, res)=>{
+    try{
+        const itemStore = await storeService.addItem({
+            item: req.body.item,
+            store: req.body.store
+        })
+        return itemStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteItem = async (req, res)=>{
+    try{
+        const { itemStoreId: id} = req.params
+        const itemStore = await storeService.removeItem(id)
+        return itemStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const findItems = async (req, res)=>{
+    try{
+        const { storeId: id } = req.params
+        const itemStore = await storeService.findItems(id)
+        return itemStore
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+module.exports = {
+    createStore,
+    findByCompany,
+    findByUser,
+    updateStore,
+    deleteStore,
+    findItems,
+    findUsers,
+    addItem,
+    addUser,
+    deleteItem,
+    deleteUser
 }

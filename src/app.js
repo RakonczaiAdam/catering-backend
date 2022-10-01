@@ -2,46 +2,20 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const routes = require('./routes/routes')
-const cors = require('cors')
 const { requestLog } = require('./middlewares/reguestLog')
+const corsConfig = require("./middlewares/cors")
 
 try{
 
   console.log('Server starting...')
+  console.log('enviroment: '+process.env.NODE_ENV)
 
-  try{
-    const bp = require('body-parser')
-    app.use(bp.json())
-    app.use(bp.urlencoded({ extended: true }))
-    console.log("[bodyParser] initialized");
-  }catch(error){
-    console.error("[bodyParser] "+error);
-  }
+  const bp = require('body-parser')
+  app.use(bp.json())
+  app.use(bp.urlencoded({ extended: true }))
+  console.log("[bodyParser] initialized");
 
-  try{
-    const corsOptions ={
-        origin: [
-          'http://localhost:3000', 
-          "https://catering-frontend-staging-2022.herokuapp.com",
-          "https://catering-frontend-2021.herokuapp.com",
-          "http://www.catering-software.space",
-          "http://catering-software.space"
-        ],
-        methods: [
-            'GET',
-            'POST',
-            'DELETE',
-            'PUT'
-          ],
-        credentials:true, 
-        optionSuccessStatus:200,
-    }
-    app.use(cors(corsOptions))
-    console.log("[cors] initialized");
-    console.log("[cors] origins: "+corsOptions.origin);
-  }catch(error){
-    console.error("[cors] "+error);
-  }
+  app.use(corsConfig);
 
   app.use(requestLog)
   
@@ -52,5 +26,6 @@ try{
   })
   
 }catch(error){
-    console.error("Error during startring the server");
+    console.error("Error during startring the server: ");
+    console.log(error)
 }

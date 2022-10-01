@@ -1,83 +1,124 @@
-const { user } = require('pg/lib/defaults')
-const { Op } = require('sequelize')
 const { Items, Stores } = require('../models')
-const { createItem } = require('../services/itemService')
+const itemService = require('../services/itemService')
 
-exports.createItem = async (req, res)=>{
+const createItem = async (req, res)=>{
     try{
-        // Ha a store üres akkor minden storeba vegye fel
-        const {itemName, price, store, logicalPrinter, vat, stock, unit} = req.body
-        if(store == null){
-            const stores = await Stores.findAll({
-                where : {
-                    company : req.user.company
-                }
-            })
-            const items = []
-            stores.map(async s=>{
-                const item = await createItem({
-                        itemName: itemName,
-                        price: price,
-                        store: s.id,
-                        stock: stock,
-                        unit: unit
-                    }
-                )
-                items.push(item)
-            })
-            return res.status(200).json(items)
-        }
-        const item = await createItem({
-                itemName: itemName,
-                price: price,
-                store: store,
-                stock: stock,
-                unit: unit
-            }
-        )
+        const item = await itemService.create(req.body)
         return res.json(item)
     }catch(error){
-        console.log(error)
-        return res.status(500)
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.getItemsByCompany = async (req, res)=>{
+const findItemsByCompany = async (req, res)=>{
     try{
-        const items = await Items.findAll({
-            where: {
-                '$storeId.company$': {[Op.eq]: req.user.company}
-            },
-            include: [{
-                model: Stores,
-                as : 'storeId'
-            }],
-            order: [
-                ['createdAt', 'DESC']
-            ]
-        })
+        const items = await itemService.findByCompany(req.user.company)
         return res.json(items)
     }catch(error){
-        console.log(error)
-        return res.status(500)
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.deleteItemById = async (req, res)=>{
+const findItemsByCategory = async (req, res)=>{
+    try{
+        const items = await itemService.findByCategory(req.params.categoryId)
+        return res.json(items)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const findItemsByStore = async (req, res)=>{
+    try{
+        const items = await itemService.findByStore(req.params.storeId)
+        return res.json(items)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteItem = async (req, res)=>{
     try{
         const {itemId: id} = req.params
-        const deletedRows = await Items.destroy({
-            where: {
-                id: id
-            }
-        })
+        const deletedRows = await itemService.remove(id)
         return res.json(deletedRows)
     }catch(error){
-        console.log(error)
-        return res.status(500)
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
     }
 }
 
-exports.getItemsByStore = async (req, res)=>{
+const updateItem = async (req, res)=>{
+    try{
+        const {itemId: id} = req.params
+        const item = await itemService.update({id, ...req.body})
+        return res.json(item)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
 
+const addDelivery = async (req, res)=>{
+    try{
+        const delivery = await itemService.createDelivery(req.body)
+        await itemService.updateStock(delivery.item, delivery.quantity)
+        return res.json(delivery)
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteDelivery = async (req, res)=>{
+    try{
+        const { deliveryId: id} = req.params
+        const delivery = await itemService.findDelivery(id)
+        await itemService.updateStock(delivery.item, -delivery.quantity)
+        const deletedDelivery = await itemService.removeDelivery(delivery.id)
+        return deletedDelivery
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const deleteOldDeliveries = async (req, res)=>{
+    try{
+        const { itemId: item } = req.params
+        const { received } = req.body
+        const deletedRows = await itemService.removeDeliveries(received, item)
+        return deletedRows
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+const findDeliveriesByItem = async (req, res)=>{
+    try{
+        const { itemId: item} = req.params
+        const deliveries = await itemService.findDeliveries(item)
+        return deliveries
+    }catch(error){
+        console.error(error.message)
+        return res.status(500).json({error: error.message})
+    }
+}
+
+module.exports = {
+    createItem,
+    findItemsByCompany,
+    findItemsByCategory,
+    findItemsByStore,
+    updateItem,
+    deleteItem,
+    addDelivery,
+    deleteDelivery,
+    deleteOldDeliveries,
+    findDeliveriesByItem
 }
