@@ -35,4 +35,9 @@ const update = async (locationData)=>{
     return updatedLocation
 }
 
-module.exports = {create, findById, remove, update}
+module.exports = {
+    create, 
+    findById, 
+    remove, 
+    update
+}
