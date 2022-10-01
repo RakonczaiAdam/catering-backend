@@ -35,7 +35,7 @@
     "g": "^2.0.1",
     "heroku": "^7.63.4",
     "jsonwebtoken": "^8.5.1",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.20",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.18.0"
@@ -43,8 +43,8 @@
   "devDependencies": {
     "jest": "^29.0.1"
   },
-  "engine": {
-    "node": "16.0.0",
-    "npm": "7.10.0"
-  } 
+  "engines": {
+    "node": "16.17.1",
+    "npm": "8.15.0"
+  }
 }
