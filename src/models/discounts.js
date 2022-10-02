@@ -16,10 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Discounts.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     discountName: DataTypes.STRING,
-    collection: DataTypes.INTEGER,
-    item: DataTypes.INTEGER,
-    category: DataTypes.INTEGER,
+    collection: DataTypes.STRING,
+    item: DataTypes.STRING,
+    category: DataTypes.STRING,
     value: DataTypes.INTEGER,
     precentage: DataTypes.INTEGER
   }, {

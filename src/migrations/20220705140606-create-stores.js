@@ -4,22 +4,21 @@ module.exports = {
     await queryInterface.createTable('Stores', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       storeName: {
         type: Sequelize.STRING
       },
       company: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references :{
           model: 'Companies',
           key: 'id'
         }
       },
       location: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references :{
           model: 'Locations',
           key: 'id'

@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable('Printers', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       printerName: {
         type: Sequelize.STRING
@@ -18,7 +17,7 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       store:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Stores',
           key: 'id'

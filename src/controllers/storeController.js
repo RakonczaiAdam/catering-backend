@@ -2,11 +2,13 @@ const storeService = require('../services/storeService')
 const locationService = require('../services/locationService')
 const userService = require('../services/userService')
 const roomService = require("../services/roomService")
+const { v4: uuid4 } = require('uuid');
 
 const createStore = async (req, res)=>{
     try{
         const {storeName, country, region, city, address} = req.body;
         const location = await locationService({
+            id: uuid4(),
             country,
             region,
             city,

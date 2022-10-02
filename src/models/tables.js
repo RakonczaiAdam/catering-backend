@@ -16,8 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Tables.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     tableName: DataTypes.STRING,
-    room: DataTypes.INTEGER,
+    room: DataTypes.STRING,
     placeX: DataTypes.INTEGER,
     placeY: DataTypes.INTEGER,
     state: DataTypes.BOOLEAN

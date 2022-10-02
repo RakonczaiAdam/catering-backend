@@ -16,8 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Rooms.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     roomName: DataTypes.STRING,
-    store: DataTypes.INTEGER
+    store: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Rooms',

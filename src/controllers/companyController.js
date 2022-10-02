@@ -2,11 +2,13 @@ const userService = require('../services/userService')
 const locationService = require('../services/locationService')
 const companyService = require('../services/companyService');
 const { FieldConflictError } = require('../helpers/error');
+const { v4: uuid4 } = require('uuid');
 
 const registerCompany = async (req, res) => {
     try{
         const {companyName, password, country, region, city, address, taxNumber, email, phoneNumber} = req.body;
         const location = await locationService.create({
+            id: uuid4(),
             country, 
             region, 
             city, 

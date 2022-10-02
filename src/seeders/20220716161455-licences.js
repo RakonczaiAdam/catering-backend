@@ -1,9 +1,12 @@
 'use strict';
 
+const { v4: uuid4 } = require('uuid');
+
 module.exports = {
   async up (queryInterface, Sequelize) {
      await queryInterface.bulkInsert('Licences', [
       {
+         id: uuid4(),
          licenceName: 'basic',
          userLimit: 5,
          period: 30, // days

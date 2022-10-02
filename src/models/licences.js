@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Licences.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     licenceName: DataTypes.STRING,
     userLimit: DataTypes.INTEGER,
     period: DataTypes.INTEGER,

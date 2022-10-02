@@ -14,8 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ItemPrinters.init({
-    item: DataTypes.INTEGER,
-    printer: DataTypes.INTEGER
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    item: DataTypes.STRING,
+    printer: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'ItemPrinters',

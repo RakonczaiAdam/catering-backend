@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RefreshTokens.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     token: DataTypes.STRING(1234)
   }, {
     sequelize,

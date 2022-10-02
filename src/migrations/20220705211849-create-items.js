@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable('Items', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       itemName: {
         type: Sequelize.STRING
@@ -18,21 +17,21 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       category: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Categories',
           key: 'id'
         }
       },
       vat: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Vats',
           key: 'id'
         }
       },
       company: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Categories',
           key: 'id'

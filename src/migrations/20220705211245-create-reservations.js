@@ -4,12 +4,11 @@ module.exports = {
     await queryInterface.createTable('Reservations', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       table: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Tables',
           key: 'id'

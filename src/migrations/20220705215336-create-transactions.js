@@ -4,26 +4,25 @@ module.exports = {
     await queryInterface.createTable('Transactions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       tableUsed: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Tables',
           key: 'id'
         }
       },
       user: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Users',
           key: 'id'
         }
       },
       collection: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Collections',
           key: 'id'

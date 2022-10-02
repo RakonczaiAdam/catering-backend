@@ -15,10 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Vats.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     vatName: DataTypes.STRING,
     collectorNumber: DataTypes.INTEGER,
     value: DataTypes.INTEGER,
-    company: DataTypes.INTEGER
+    company: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Vats',

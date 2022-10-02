@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userService = require('../services/userService')
 const storeService = require('../services/storeService');
 const { FieldConflictError } = require('../helpers/error');
+const { v4: uuid4 } = require('uuid');
 
 const getToken = async (req, res) => {
     try{
@@ -92,6 +93,7 @@ const registerUser = async (req, res) =>{
             return res.status(403).json({error: new FieldConflictError("User", "name")})
         }
         const registeredUser = await userService.registerUser({
+            id: uuid4(),
             company: req.user.company,
             userName: req.body.userName,
             password: req.body.password,

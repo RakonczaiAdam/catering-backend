@@ -14,8 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RoomPrinters.init({
-    room: DataTypes.INTEGER,
-    printer: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    room: DataTypes.STRING,
+    printer: DataTypes.STRING,
     reservation: DataTypes.BOOLEAN
   }, {
     sequelize,

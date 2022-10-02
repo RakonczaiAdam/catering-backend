@@ -1,9 +1,11 @@
 const transactionService = require('../services/transactionService')
 const transactionItemService = require('../services/transactionItemService')
+const { v4: uuid4 } = require('uuid');
 
 const createTransaction = async (req, res)=>{
     try{
         const transaction = await transactionService({
+            id: uuid4(),
             tableUsed: req.body.tableUsed,
             user: req.body.user,
             collection: req.body.collection,

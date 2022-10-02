@@ -21,9 +21,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Stores.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     storeName: DataTypes.STRING,
-    company: DataTypes.INTEGER,
-    location: DataTypes.INTEGER
+    company: DataTypes.STRING,
+    location: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Stores',

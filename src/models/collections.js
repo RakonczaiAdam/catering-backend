@@ -16,8 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Collections.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     collectionName: DataTypes.STRING,
-    store: DataTypes.INTEGER
+    store: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Collections',

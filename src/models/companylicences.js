@@ -14,8 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   CompanyLicences.init({
-    company: DataTypes.INTEGER,
-    licence: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    company: DataTypes.STRING,
+    licence: DataTypes.STRING,
     active: DataTypes.BOOLEAN
   }, {
     sequelize,

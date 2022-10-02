@@ -1,9 +1,13 @@
 const { Items, Stores } = require('../models')
 const itemService = require('../services/itemService')
+const { v4: uuid4 } = require('uuid');
 
 const createItem = async (req, res)=>{
     try{
-        const item = await itemService.create(req.body)
+        const item = await itemService.create({
+            id: uuid4,
+            ...req.body 
+        })
         return res.json(item)
     }catch(error){
         console.error(error.message)

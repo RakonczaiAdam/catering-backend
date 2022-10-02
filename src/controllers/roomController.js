@@ -1,8 +1,10 @@
 const roomService = require('../services/roomService')
+const { v4: uuid4 } = require('uuid');
 
 const createRoom = async (req, res)=>{
     try{
         const room = await roomService.create({
+            id: uuid4(),
             roomName: req.body.roomName,
             store: req.body.store
         })

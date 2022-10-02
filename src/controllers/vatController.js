@@ -1,8 +1,10 @@
 const vatService = require('../services/vatService')
+const { v4: uuid4 } = require('uuid');
 
 const createVat = async (req, res) =>{
     try{
         const vat = await vatService.create({
+            id: uuid4(),
             vatName: req.body.vatName,
             collectorNumber: req.body.collectorNumber,
             value: req.body.value,

@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable('Licences', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       licenceName: {
         type: Sequelize.STRING

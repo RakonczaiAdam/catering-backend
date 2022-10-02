@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Deliveries.init({
-    item: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    item: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
     received: DataTypes.DATE
   }, {

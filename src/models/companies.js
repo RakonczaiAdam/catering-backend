@@ -20,8 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Companies.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     companyName: DataTypes.STRING,
-    location: DataTypes.INTEGER,
+    location: DataTypes.STRING,
     taxNumber: DataTypes.STRING,
     email: DataTypes.STRING,
     phone: DataTypes.STRING

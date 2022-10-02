@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Reservations.init({
-    table: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    table: DataTypes.STRING,
     start: DataTypes.DATE,
     customerName: DataTypes.STRING
   }, {

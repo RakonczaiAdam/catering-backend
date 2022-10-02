@@ -1,8 +1,10 @@
 const tableService = require('../services/tableService')
+const { v4: uuid4 } = require('uuid');
 
 const createTable = async (req, res)=>{
     try{
         const table = await tableService.create({
+            id: uuid4(),
             tableName: req.body.tableName,
             room: req.body.room,
             placeX: req.body.placeX,

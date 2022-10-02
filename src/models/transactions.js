@@ -18,9 +18,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Transactions.init({
-    tableUsed: DataTypes.INTEGER,
-    user: DataTypes.INTEGER,
-    collection: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    tableUsed: DataTypes.STRING,
+    user: DataTypes.STRING,
+    collection: DataTypes.STRING,
     closedAt: DataTypes.DATE
   }, {
     sequelize,

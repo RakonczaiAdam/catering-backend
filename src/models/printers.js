@@ -16,10 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Printers.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     printerName: DataTypes.STRING,
     share: DataTypes.STRING,
     isOn: DataTypes.BOOLEAN,
-    store: DataTypes.INTEGER
+    store: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Printers',

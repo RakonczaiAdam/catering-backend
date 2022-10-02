@@ -4,19 +4,18 @@ module.exports = {
     await queryInterface.createTable('ItemPrinters', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       item: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Items',
           key: 'id'
         }
       },
       printer: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Printers',
           key: 'id'

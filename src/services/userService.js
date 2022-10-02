@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { Users, RefreshTokens } = require('../models');
 const jwt = require('jsonwebtoken');
+const { v4: uuid4 } = require('uuid');
 
 const registerUser = async (userData) =>{
     const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -15,6 +16,7 @@ const createAccessToken = async (user) => {
 
 const createRefreshToken = async (refreshToken)=>{
     const dbToken = await RefreshTokens.create({
+        id: uuid4(),
         token: refreshToken,
         createdAt: new Date(),
         updatedAt: new Date()

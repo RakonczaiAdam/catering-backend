@@ -1,9 +1,11 @@
 const couponService = require('../services/couponService')
 const { generate } = require('../helpers/activationCode')
+const { v4: uuid4 } = require('uuid');
 
 const createCoupon = async (req, res)=>{
     try{
         const coupon = await couponService.create({
+            id: uuid4(),
             activationCode: generate(),
             value: req.body.value,
             expirationDate: new Date(),

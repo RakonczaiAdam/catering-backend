@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Locations.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     country: DataTypes.STRING,
     region: DataTypes.STRING,
     city: DataTypes.STRING,

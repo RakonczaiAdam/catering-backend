@@ -1,8 +1,10 @@
 const printerService = require('../services/printerService')
+const { v4: uuid4 } = require('uuid');
 
 const createPrinter = async (req, res)=>{
     try{
         const printer = await printerService.create({
+            id: uuid4(),
             printerName: req.body.printerName,
             share: req.body.share,
             isOn: req.body.isOn,

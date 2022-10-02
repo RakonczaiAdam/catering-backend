@@ -16,13 +16,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Coupons.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     activationCode: DataTypes.STRING,
     value: DataTypes.INTEGER,
     expirationDate: DataTypes.DATE,
     customerEmail: DataTypes.STRING,
-    madeBy: DataTypes.INTEGER,
-    transaction: DataTypes.INTEGER,
-    company: DataTypes.INTEGER,
+    madeBy: DataTypes.STRING,
+    transaction: DataTypes.STRING,
+    company: DataTypes.STRING,
     unUsed: DataTypes.BOOLEAN
   }, {
     sequelize,

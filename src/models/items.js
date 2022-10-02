@@ -21,14 +21,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Items.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     itemName: DataTypes.STRING,
     color: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    category: DataTypes.INTEGER,
-    vat: DataTypes.INTEGER,
+    category: DataTypes.STRING,
+    vat: DataTypes.STRING,
     stock: DataTypes.INTEGER,
     unit: DataTypes.STRING,
-    company: DataTypes.INTEGER
+    company: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Items',
