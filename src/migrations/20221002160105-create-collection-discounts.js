@@ -1,41 +1,26 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Discounts', {
+    await queryInterface.createTable('CollectionDiscounts', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING
       },
-      discountName: {
-        type: Sequelize.STRING
-      },
-      item: {
+      collection: {
         type: Sequelize.STRING,
         references: {
-          model: 'Items',
+          model: 'Collections',
           key: 'id'
         }
       },
-      category: {
+      discount: {
         type: Sequelize.STRING,
         references: {
-          model: 'Categories',
+          model: 'Discounts',
           key: 'id'
         }
-      },
-      store: {
-        type: Sequelize.STRING,
-        references : {
-          model: 'Stores',
-          key: 'id'
-        }
-      },
-      value: {
-        type: Sequelize.INTEGER
-      },
-      precentage: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -48,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Discounts');
+    await queryInterface.dropTable('CollectionDiscounts');
   }
 };

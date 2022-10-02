@@ -1,4 +1,4 @@
-const { Collections } = require('../models')
+const { Collections, CollectionDiscounts, Discounts } = require('../models')
 
 const create = async (collectionData)=>{
     const collection = await Collections.create(collectionData)
@@ -42,10 +42,45 @@ const update = async (collectionData)=>{
     return updatedCollection
 }
 
+const addDiscount = async (data)=> {
+    const collectionDiscount = await CollectionDiscounts.create(data);
+    return collectionDiscount;
+}
+
+const removeDiscount = async (collectionDiscountId)=> {
+    const deleted = await CollectionDiscounts.destroy({
+        where: {
+            id: collectionDiscountId
+        }
+    })
+    return deleted;
+}
+
+const findDiscounts = async (collectionId)=> {
+    const discounts = await CollectionDiscounts.findAll({
+        where: {
+            collection: collectionId
+        },
+        include: [
+            {
+                model: Discounts
+            },
+            {
+                model: Collections
+            }
+        ]  
+    })
+
+    return discounts;
+}
+
 module.exports = {
     create,
     findById,
     findByStore,
     remove,
-    update
+    update,
+    addDiscount,
+    removeDiscount,
+    findDiscounts
 }

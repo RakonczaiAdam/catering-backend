@@ -12,6 +12,8 @@ const vats = require('./vats')
 const transactions = require('./transactions')
 const coupons = require('./coupons')
 const categories = require('./categories')
+const collections = require('./collections')
+const discounts = require('./discounts')
 
 router.use('/users', users)
 router.use('/companies', companies)
@@ -25,5 +27,7 @@ router.use('/vats', vats)
 router.use('/transactions', transactions)
 router.use('/coupons', coupons)
 router.use('/categories', categories)
+router.use('/collections', collections)
+router.use('/discounts', discounts)
 
 module.exports = router

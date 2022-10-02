@@ -4,7 +4,7 @@ const { authenticateToken } = require("../middlewares/jwt")
 
 router.post("/create", authenticateToken, categoryController.createCategory)
 
-router.get("/", authenticateToken, categoryController.findByParent)
+router.get("/:categoryId", authenticateToken, categoryController.findByParent)
 
 router.put("/rename/:categoryId", authenticateToken, categoryController.rename)
 

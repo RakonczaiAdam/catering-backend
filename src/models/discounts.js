@@ -9,10 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Collections, Items, Categories}) {
-      this.belongsTo(Collections, {foreignKey: 'collection'}),
+    static associate({Collections, Items, Categories, CollectionDiscounts, Store}) {
+      this.belongsToMany(Collections, {through: CollectionDiscounts}),
       this.belongsTo(Items, {foreignKey: 'item'}),
-      this.belongsTo(Categories, {foreignKey: 'category'})
+      this.belongsTo(Categories, {foreignKey: 'category'}),
+      this.belongsTo(Store, {foreignKey: 'store'})
     }
   }
   Discounts.init({
@@ -21,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     discountName: DataTypes.STRING,
-    collection: DataTypes.STRING,
     item: DataTypes.STRING,
     category: DataTypes.STRING,
+    store: DataTypes.STRING,
     value: DataTypes.INTEGER,
     precentage: DataTypes.INTEGER
   }, {
