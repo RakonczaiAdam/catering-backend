@@ -33,7 +33,7 @@ module.exports = {
       company: {
         type: Sequelize.STRING,
         references: {
-          model: 'Categories',
+          model: 'Companies',
           key: 'id'
         }
       },
@@ -42,6 +42,13 @@ module.exports = {
       },
       unit: {
         type: Sequelize.STRING
+      },
+      createdBy: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

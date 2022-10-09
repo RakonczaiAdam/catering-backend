@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({Users}) {
+      this.belongsTo(Users, {foreignKey: 'createdBy'})
     }
   }
   CollectionDiscounts.init({
@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     collection: DataTypes.STRING,
-    discount: DataTypes.STRING
+    discount: DataTypes.STRING,
+    createdBy: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'CollectionDiscount',
+    modelName: 'CollectionDiscounts',
   });
   return CollectionDiscounts;
 };

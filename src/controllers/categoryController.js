@@ -20,7 +20,7 @@ const createCategory = async (req, res) => {
 
 const findByParent = async (req, res) => {
     try{
-        const category = await categoryService.findByParent(req.params.categoryId);
+        const category = await categoryService.findByParent(req.params.categoryId, req.user.company);
         return res.json(category);
     }catch(error){
         console.error(error.message)

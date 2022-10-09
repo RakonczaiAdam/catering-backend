@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({Users}) {
+      this.belongsTo(Users, {foreignKey: 'createdBy'})
     }
   }
   ItemStores.init({
@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     item: DataTypes.STRING,
-    store: DataTypes.STRING
+    store: DataTypes.STRING,
+    createdBy: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'ItemStores',

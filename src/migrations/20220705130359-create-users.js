@@ -23,6 +23,13 @@ module.exports = {
       isAdmin: {
         type: Sequelize.BOOLEAN
       },
+      createdBy: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

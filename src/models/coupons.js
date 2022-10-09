@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({Users, Transactions, Companies}) {
-      this.belongsTo(Users, {foreignKey: 'madeBy'}),
+      this.belongsTo(Users, {foreignKey: 'createdBy'}),
       this.belongsTo(Transactions, {foreignKey: 'transaction'}),
       this.belongsTo(Companies, {foreignKey: 'company'})
     }
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     value: DataTypes.INTEGER,
     expirationDate: DataTypes.DATE,
     customerEmail: DataTypes.STRING,
-    madeBy: DataTypes.STRING,
+    createdBy: DataTypes.STRING,
     transaction: DataTypes.STRING,
     company: DataTypes.STRING,
     unUsed: DataTypes.BOOLEAN

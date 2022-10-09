@@ -9,15 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Locations, Companies, Users, UserStores, Printers, Categories, Collections, Rooms, Items, ItemStores}) {
+    static associate({Locations, Companies, Users, UserStores, Discounts,
+        Printers, Categories, Collections, Rooms, Items, ItemStores}) {
       this.belongsTo(Locations, {foreignKey: 'location'}),
       this.belongsTo(Companies, {foreignKey: 'company'}),
+      this.belongsTo(Users, {foreignKey: 'createdBy'}),
       this.belongsToMany(Users, {through: UserStores}),
+      this.belongsToMany(Items, {through: ItemStores}),
       this.hasMany(Printers, {foreignKey: 'store'}),
       this.hasMany(Categories, {foreignKey: 'store'}),
       this.hasMany(Collections, {foreignKey: 'store'}),
       this.hasMany(Rooms, {foreignKey: 'store'}),
-      this.belongsToMany(Items, {through: ItemStores})
+      this.hasMany(Discounts, {foreignKey: 'store'})
     }
   }
   Stores.init({
@@ -27,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     storeName: DataTypes.STRING,
     company: DataTypes.STRING,
-    location: DataTypes.STRING
+    location: DataTypes.STRING,
+    createdBy: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Stores',

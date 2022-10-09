@@ -20,7 +20,7 @@ module.exports = {
       customerEmail: {
         type: Sequelize.STRING
       },
-      madeBy: {
+      createdBy: {
         type: Sequelize.STRING,
         references: {
           model: 'Users',

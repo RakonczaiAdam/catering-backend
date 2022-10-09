@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Tables}) {
-      this.belongsTo(Tables, {foreignKey: 'table'})
+    static associate({Tables, Users}) {
+      this.belongsTo(Tables, {foreignKey: 'table'}),
+      this.belongsTo(Users, {foreignKey: 'createdBy'})
     }
   }
   Reservations.init({
@@ -20,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     table: DataTypes.STRING,
     start: DataTypes.DATE,
-    customerName: DataTypes.STRING
+    customerName: DataTypes.STRING,
+    createdBy: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Reservations',

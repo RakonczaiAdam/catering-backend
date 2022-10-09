@@ -23,6 +23,13 @@ module.exports = {
           key: 'id'
         }
       },
+      createdBy: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

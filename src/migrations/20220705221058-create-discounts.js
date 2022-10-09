@@ -37,6 +37,13 @@ module.exports = {
       precentage: {
         type: Sequelize.INTEGER
       },
+      createdBy: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

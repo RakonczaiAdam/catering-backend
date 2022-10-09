@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Tables, Users, Collections, Items, TransactionItems, Coupons}) {
       this.belongsTo(Tables, {foreignKey: 'tableUsed'}),
-      this.belongsTo(Users, {foreignKey: 'user'}),
+      this.belongsTo(Users, {foreignKey: 'createdBy'}),
       this.belongsTo(Collections, {foreignKey: 'collection'}),
       this.belongsToMany(Items, {through: TransactionItems}),
       this.hasMany(Coupons, {foreignKey: 'transaction'})
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     tableUsed: DataTypes.STRING,
-    user: DataTypes.STRING,
+    createdBy: DataTypes.STRING,
     collection: DataTypes.STRING,
     closedAt: DataTypes.DATE
   }, {

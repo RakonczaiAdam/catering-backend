@@ -20,6 +20,13 @@ module.exports = {
       received: {
         type: Sequelize.DATE
       },
+      createdBy: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
