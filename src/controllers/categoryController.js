@@ -28,18 +28,7 @@ const findByParent = async (req, res) => {
     }
 }
 
-const rename = async (req, res) => {
-    try{
-        const { categoryId } = req.params;
-        const category = await categoryService.update({ id: categoryId, ...req.body});
-        return res.json(category);
-    }catch(error){
-        console.error(error.message)
-        return res.status(500).json({error: error.message})
-    }
-}
-
-const changeParent = async (req, res) => {
+const updateCategory = async (req, res) => {
     try{
         const { categoryId } = req.params;
         const category = await categoryService.update({ id: categoryId, ...req.body});
@@ -64,7 +53,6 @@ const deleteCategory = async (req, res) => {
 module.exports = {
     createCategory,
     findByParent,
-    rename,
-    changeParent,
+    updateCategory,
     deleteCategory
 }

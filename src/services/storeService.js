@@ -1,6 +1,11 @@
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 const { Stores, Items, Users, ItemStores, UserStores, ItemsStores } = require('../models');
 
 const create = async (storeData)=>{
+    if(nameChecker('Stores', storeData.storeName, 'company', storeData.company)){
+        return new FieldConflictError("User", "name");
+    }
     const store = await Stores.create(storeData)
     return store
 }

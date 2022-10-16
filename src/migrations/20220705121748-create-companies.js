@@ -8,7 +8,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       companyName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       location: {
         type: Sequelize.STRING,

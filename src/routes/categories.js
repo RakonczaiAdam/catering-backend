@@ -6,10 +6,8 @@ router.post("/create", authenticateToken, categoryController.createCategory)
 
 router.get("/:categoryId", authenticateToken, categoryController.findByParent)
 
-router.put("/rename/:categoryId", authenticateToken, categoryController.rename)
+router.put("/:categoryId", authenticateToken, categoryController.updateCategory)
 
-router.put("/changeParent/:categoryId", authenticateToken, categoryController.changeParent)
-
-router.delete("/delete/:categoryId", authenticateToken, categoryController.deleteCategory)
+router.delete("/:categoryId", authenticateToken, categoryController.deleteCategory)
 
 module.exports = router

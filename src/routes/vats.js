@@ -3,12 +3,12 @@ const vatController = require('../controllers/vatController')
 const { authenticateToken } = require('../middlewares/jwt')
 const { hasAdminPrivilage } = require('../middlewares/permission')
 
-router.post('/create', [authenticateToken, hasAdminPrivilage], vatController.createVat)
+router.post('/', [authenticateToken, hasAdminPrivilage], vatController.createVat)
 
-router.get('/findByCompany/:companyId', authenticateToken, vatController.findVatByCompany)
+router.get('/company/:companyId', authenticateToken, vatController.findVatByCompany)
 
-router.put('/update/:vatId', [authenticateToken, hasAdminPrivilage], vatController.updateVat)
+router.put('/:vatId', [authenticateToken, hasAdminPrivilage], vatController.updateVat)
 
-router.delete('/delete/:vatId', [authenticateToken, hasAdminPrivilage], vatController.deleteVat)
+router.delete('/:vatId', [authenticateToken, hasAdminPrivilage], vatController.deleteVat)
 
 module.exports = router

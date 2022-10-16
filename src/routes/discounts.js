@@ -2,12 +2,12 @@ const router = require('express').Router()
 const { authenticateToken } = require('../middlewares/jwt')
 const discountController = require('../controllers/discountController')
 
-router.post('/create', authenticateToken, discountController.createDiscount);
+router.post('/', authenticateToken, discountController.createDiscount);
 
-router.put('/update/:discountId', authenticateToken, discountController.updateDiscount);
+router.put('/:discountId', authenticateToken, discountController.updateDiscount);
 
-router.get("/", authenticateToken, discountController.findByStore);
+router.get("/:storeId", authenticateToken, discountController.findByStore);
 
-router.delete("/delete/:discountId", authenticateToken, discountController.deleteDiscount);
+router.delete("/:discountId", authenticateToken, discountController.deleteDiscount);
 
 module.exports = router

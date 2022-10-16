@@ -8,14 +8,14 @@ router.get("/:collectionId", authenticateToken, collectionController.findById);
 
 router.get("/store/:storeId", authenticateToken, collectionController.findByStore);
 
-router.put("/update/:collectionId", authenticateToken, collectionController.renameCollection);
+router.put("/:collectionId", authenticateToken, collectionController.renameCollection);
 
-router.delete("/delete/:collectionId", authenticateToken, collectionController.deleteCollection);
+router.delete("/:collectionId", authenticateToken, collectionController.deleteCollection);
 
-router.post("/addDiscount", authenticateToken, collectionController.addDiscount);
+router.post("/discount", authenticateToken, collectionController.addDiscount);
 
-router.delete("/deleteDiscount/:collectionDiscountId", authenticateToken, collectionController.removeDiscount);
+router.delete("/discount/:collectionDiscountId", authenticateToken, collectionController.removeDiscount);
 
-router.get("/discounts/:collectionId", authenticateToken, collectionController.findDiscounts);
+router.get("/discount/:collectionId", authenticateToken, collectionController.findDiscounts);
 
 module.exports = router

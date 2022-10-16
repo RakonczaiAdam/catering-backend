@@ -2,16 +2,21 @@ const bcrypt = require('bcrypt');
 const { Users, RefreshTokens } = require('../models');
 const jwt = require('jsonwebtoken');
 const { v4: uuid4 } = require('uuid');
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 
 const registerUser = async (userData) =>{
+    if(nameChecker('Users', userData.userName, 'company', userData.company)){
+        return new FieldConflictError("User", "name");
+    }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    userData.password = hashedPassword
-    const user = await Users.create(userData)
-    return user
+    userData.password = hashedPassword;
+    const user = await Users.create(userData);
+    return user;
 }
 
 const createAccessToken = async (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'});
 } 
 
 const createRefreshToken = async (refreshToken)=>{
@@ -20,8 +25,8 @@ const createRefreshToken = async (refreshToken)=>{
         token: refreshToken,
         createdAt: new Date(),
         updatedAt: new Date()
-    })
-    return dbToken
+    });
+    return dbToken;
 }
 
 const findRefreshToken = async (refreshToken)=>{
@@ -29,8 +34,8 @@ const findRefreshToken = async (refreshToken)=>{
         where: {
             token: refreshToken
         }
-    })
-    return dbToken
+    });
+    return dbToken;
 }
 
 const removeRefreshToken = async (refreshToken)=>{
@@ -38,8 +43,8 @@ const removeRefreshToken = async (refreshToken)=>{
         where : {
             token: refreshToken
         }
-    })
-    return deletedToken
+    });
+    return deletedToken;
 }
 
 const findAdmins = async (companyId)=>{
@@ -48,8 +53,8 @@ const findAdmins = async (companyId)=>{
             company: companyId,
             isAdmin: true
         }
-    })
-    return admins
+    });
+    return admins;
 }
 
 const findByName = async (companyId, userName)=>{
@@ -58,8 +63,8 @@ const findByName = async (companyId, userName)=>{
             company: companyId,
             userName: userName
         }
-    })
-    return user
+    });
+    return user;
 }
 
 const findById = async (userId)=>{
@@ -67,8 +72,8 @@ const findById = async (userId)=>{
         where : {
             id: userId
         }
-    })
-    return user
+    });
+    return user;
 }
 
 const findAllByCompany = async (companyId)=>{
@@ -79,8 +84,8 @@ const findAllByCompany = async (companyId)=>{
         order: [
             ['createdAt', 'DESC']
         ]
-    })
-    return users
+    });
+    return users;
 }
 
 const remove = async (userId)=>{
@@ -88,8 +93,8 @@ const remove = async (userId)=>{
         where: {
             id: userId
         }
-    })
-    return deletedUser
+    });
+    return deletedUser;
 }
 
 module.exports = { 
@@ -103,4 +108,4 @@ module.exports = {
     findAllByCompany,
     findAdmins,
     remove
-}
+};

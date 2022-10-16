@@ -6,10 +6,10 @@ router.get("/", authenticateToken, licenceController.findAllLicence)
 
 router.get("/:licenceId", licenceController.findLicenceById)
 
-router.post("/create", licenceController.createLicence)
+router.post("/", licenceController.createLicence)
 
-router.delete("/delete/:licenceId", licenceController.deleteLicence)
+router.delete("/:licenceId", licenceController.deleteLicence)
 
-router.put("/update/:licenceId", licenceController.updateLicence)
+router.put("/:licenceId", licenceController.updateLicence)
 
 module.exports = router
