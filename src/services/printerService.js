@@ -1,6 +1,11 @@
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 const { Printers, Rooms, Items, RoomPrinters, ItemPrinters } = require('../models')
 
 const create = async (printerData)=>{
+    if(nameChecker('Printers', printerData.vatName, 'store', printerData.store)){
+        return new FieldConflictError("Printer", "name");
+    }
     const printer = await Printers.create(printerData)
     return printer
 }

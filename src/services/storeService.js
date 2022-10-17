@@ -4,7 +4,7 @@ const { Stores, Items, Users, ItemStores, UserStores, ItemsStores } = require('.
 
 const create = async (storeData)=>{
     if(nameChecker('Stores', storeData.storeName, 'company', storeData.company)){
-        return new FieldConflictError("User", "name");
+        return new FieldConflictError("Store", "name");
     }
     const store = await Stores.create(storeData)
     return store

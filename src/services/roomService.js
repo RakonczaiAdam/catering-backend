@@ -1,6 +1,11 @@
 const { Rooms } = require('../models')
+const { nameChecker } = require('../helpers/nameChecker');
+const { FieldConflictError } = require('../helpers/error');
 
 const create = async (roomData)=>{
+    if(nameChecker('Rooms', roomData.roomName, 'store', roomData.store)){
+        return new FieldConflictError("Room", "name");
+    }
     const room = await Rooms.create(roomData)
     return room
 }

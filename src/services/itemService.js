@@ -1,7 +1,12 @@
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 const { Items, Deliveries, ItemStores } = require('../models')
 
 const create = async (itemData)=>{
+    if(nameChecker('Items', itemData.itemName, 'category', itemData.category)){
+        return new FieldConflictError("Item", "name");
+    }
     const item = await Items.create(itemData).then().catch((error)=>console.error(error))
     return item
 }

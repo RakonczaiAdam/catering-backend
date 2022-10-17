@@ -1,6 +1,11 @@
 const { Tables, Reservations } = require('../models')
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 
 const create = async (tableData)=>{
+    if(nameChecker('Tables', tableData.tableName, 'room', tableName.room)){
+        return new FieldConflictError("Table", "name");
+    }
     const table = await Tables.create(tableData)
     return table
 }

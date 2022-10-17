@@ -1,7 +1,12 @@
 const { Op } = require('sequelize')
 const { Discounts, Collections } = require('../models')
+const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 
 const create = async (discountData)=>{
+    if(nameChecker('Discounts', discountData.discountName, 'store', discountData.store)){
+        return new FieldConflictError("Discounts", "name");
+    }
     const discount = await Discounts.create(discountData)
     return discount
 }

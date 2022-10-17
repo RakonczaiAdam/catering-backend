@@ -1,9 +1,10 @@
 const { FieldConflictError } = require('../helpers/error');
+const { nameChecker } = require('../helpers/nameChecker');
 const { Vats } = require('../models')
 
 const create = async (vatData)=>{
     if(nameChecker('Vats', vatData.vatName, 'company', vatData.company)){
-        return new FieldConflictError("User", "name");
+        return new FieldConflictError("Vat", "name");
     }
     const vat = await Vats.create(vatData)
     return vat

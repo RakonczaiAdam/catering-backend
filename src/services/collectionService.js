@@ -1,6 +1,11 @@
 const { Collections, CollectionDiscounts, Discounts } = require('../models')
+const { nameChecker } = require('../helpers/nameChecker');
+const { FieldConflictError } = require('../helpers/error');
 
 const create = async (collectionData)=>{
+    if(nameChecker('Collections', collectionData.collectionName, 'store', collectionData.store)){
+        return new FieldConflictError("Collection", "name");
+    }
     const collection = await Collections.create(collectionData)
     return collection
 }
